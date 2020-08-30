@@ -37,14 +37,14 @@ class Schedule extends React.Component {
       plan: [
         {
           id : 1,
-          description: '9:00 - 11:00 ',
+          description: '9:00 - 11:00 task 1',
           startHour:  9,
           endHour:  11,
           zIndex: 10,
         },
         {
           id : 2,
-          description: '12:00 - 17:00 ',
+          description: '12:00 - 17:00 task 2',
           startHour:  12,
           endHour:  17,
           zIndex: 0,
@@ -80,13 +80,14 @@ class Schedule extends React.Component {
 
   formatText(plan){
     // TOOD:開始時間が早い順にソートする
-    // plan.sort(function(a,b){
-    //   if(a.startHour < b.startHour) return -1
-    //   if(a.startHour > b.startHour) return 1
-    //   return 0
-    // })
-    console.log(plan)
-    let text = plan.map((d, i) => { return d.description }).join("\n")
+    let sortedPlan = plan.slice(0)
+    sortedPlan.sort(function(a,b){
+      if(a.startHour < b.startHour) return -1
+      if(a.startHour > b.startHour) return 1
+      return 0
+    })
+    console.log(sortedPlan)
+    let text = sortedPlan.map((d, i) => { return d.description }).join("\n")
     this.setState({text: text})
   }
 
@@ -94,7 +95,7 @@ class Schedule extends React.Component {
     let plan = this.state.plan.slice(0);
     plan[planId].startHour = startHour
     plan[planId].endHour = endHour
-    plan[planId].description = startHour + ':00 - ' + endHour + ':00 '
+    plan[planId].description = startHour + ':00 - ' + endHour + ':00 ' + 'task ' + plan[planId].id
     this.setState({ plan: plan })
     this.formatText(plan)
   }
@@ -114,9 +115,9 @@ class Schedule extends React.Component {
     this.updateZindex(planId)
   }
 
-  onResizeStop(e, direction, ref, delta, position){
-    const minutes = Math.floor(parseInt(ref.style.height, 10) / 34) * 60;
-    const startHour = Math.floor(parseInt(position.y, 10) / 34);
+  onResizeStop(e, d, ref, delta, position){
+    const minutes = Math.floor(parseInt(ref.style.height, 10) / 40) * 60;
+    const startHour = Math.round(position.y / 40);
     const endHour = startHour + (minutes / 60)
     const planId = ref.getAttribute('planid')
     this.updatePlan(planId, startHour, endHour)
@@ -128,8 +129,8 @@ class Schedule extends React.Component {
   }
 
   onDragStop(e, d){
-    const minutes = Math.floor(parseInt(e.target.style.height, 10) / 34) * 60;
-    const startHour = Math.floor(parseInt(d.y, 10) / 34);
+    const minutes = Math.floor(parseInt(e.target.style.height, 10) / 40) * 60;
+    const startHour = Math.round(d.y / 40);
     const endHour = startHour + (minutes / 60)
     const planId = e.target.getAttribute('planid')
     if (planId && startHour) {
@@ -168,9 +169,9 @@ class Schedule extends React.Component {
               className="rnd"
               default={{
                 x: 0,
-                y: d.startHour * 34,
+                y: d.startHour * 40,
                 width: '100%',
-                height: (d.endHour - d.startHour) * 34,
+                height: (d.endHour - d.startHour) * 40,
               }}
               dragAxis="y"
               enableResizing={{
@@ -178,13 +179,13 @@ class Schedule extends React.Component {
                 topRight: false, bottomRight: false, bottomLeft: false, topLeft: false
               }}
               bounds="parent"
-              resizeGrid={[0, 34]}
-              dragGrid={[1, 34]}
+              resizeGrid={[0, 40]}
+              dragGrid={[1, 40]}
               minWidth="20"
               planid={idx}
               style={{zIndex:d.zIndex}}
               onResizeStart={this.onResizeStart}
-              onDragStop={this.onDragStop}
+              onResizeStop={this.onResizeStop}
               onDragStart={this.onDragStart}
               onDragStop={this.onDragStop}
             />
