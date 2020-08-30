@@ -86,7 +86,6 @@ class Schedule extends React.Component {
       if(a.startHour > b.startHour) return 1
       return 0
     })
-    console.log(sortedPlan)
     let text = sortedPlan.map((d, i) => { return d.description }).join("\n")
     this.setState({text: text})
   }
