@@ -29,32 +29,83 @@ function Square(props) {
     </div>
   )
 }
+
+class Plan extends React.Component {
+
+  render() {
+    return (
+      <Rnd
+        key={this.props.idx}
+        className="rnd"
+        default={{
+          x: 0,
+          y: this.props.startHour * 40,
+          width: '100%',
+          height: (this.props.endHour - this.props.startHour) * 40,
+        }}
+        dragAxis="y"
+        enableResizing={{
+          top: true, right: false, bottom: true, left: false,
+          topRight: false, bottomRight: false, bottomLeft: false, topLeft: false
+        }}
+        bounds="parent"
+        resizeGrid={[0, 40]}
+        dragGrid={[1, 40]}
+        minWidth="20"
+        planid={this.props.idx}
+        style={{zIndex:this.props.zIndex}}
+        onResizeStart={this.props.onResizeStart}
+        onResizeStop={this.props.onResizeStop}
+        onDragStart={this.props.onDragStart}
+        onDragStop={this.props.onDragStop}
+      >
+        <input
+          class='description'
+          type='textarea'
+          planid={this.props.idx}
+          style={{zIndex:20}}
+          onKeyUp={this.props.saveDescription}
+        />
+        <button
+          planid={this.props.idx}
+          onClick={this.props.deletePlan}
+        >
+          delete
+        </button>
+      </Rnd>
+    )
+  }
+}
 class Schedule extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       text: '',
-      plan: [
-        {
-          id : 1,
-          description: '9:00 - 11:00 task 1',
-          startHour:  9,
-          endHour:  11,
-          zIndex: 10,
-        },
-        {
-          id : 2,
-          description: '12:00 - 17:00 task 2',
-          startHour:  12,
-          endHour:  17,
-          zIndex: 0,
-        }
-      ]
+      plan: [],
+      // 動作確認用
+      // plan: [
+      //   {
+      //     description: 'task 1',
+      //     startHour:  9,
+      //     endHour:  11,
+      //     zIndex: 10,
+      //     isEdit: false,
+      //   },
+      //   {
+      //     description: 'task 2',
+      //     startHour:  12,
+      //     endHour:  17,
+      //     zIndex: 0,
+      //     isEdit: false,
+      //   }
+      // ]
     }
     this.onResizeStart = this.onResizeStart.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onResizeStop = this.onResizeStop.bind(this);
     this.onDragStop = this.onDragStop.bind(this);
+    this.saveDescription = this.saveDescription.bind(this);
+    this.deletePlan = this.deletePlan.bind(this);
   }
 
   UNSAFE_componentWillMount(){
@@ -65,7 +116,7 @@ class Schedule extends React.Component {
     let plan = this.state.plan.slice(0)
     plan.push(
       {
-        description: startHour + ':00 - ' + endHour + ':00 ',
+        description: '',
         startHour:  startHour,
         endHour:  endHour,
       }
@@ -86,15 +137,19 @@ class Schedule extends React.Component {
       if(a.startHour > b.startHour) return 1
       return 0
     })
-    let text = sortedPlan.map((d, i) => { return d.description }).join("\n")
+    let text = sortedPlan.map((d, i) => {
+      return d.startHour + ':00 - ' + d.endHour + ':00 ' + d.description
+    }).join("\n")
     this.setState({text: text})
   }
 
-  updatePlan(planId, startHour, endHour){
+  updatePlan(planId, startHour, endHour, description){
     let plan = this.state.plan.slice(0);
     plan[planId].startHour = startHour
     plan[planId].endHour = endHour
-    plan[planId].description = startHour + ':00 - ' + endHour + ':00 ' + 'task ' + plan[planId].id
+    if(description != ''){
+      plan[planId].description = description
+    }
     this.setState({ plan: plan })
     this.formatText(plan)
   }
@@ -105,8 +160,10 @@ class Schedule extends React.Component {
       d.zIndex = 0;
       return d
     })
-    plan[planId].zIndex = 10;
-    this.setState({ plan: plan })
+    if(plan[planId]){
+      plan[planId].zIndex = 10;
+      this.setState({ plan: plan })
+    }
   }
 
   onResizeStart(e, direction, ref){
@@ -119,7 +176,7 @@ class Schedule extends React.Component {
     const startHour = Math.round(position.y / 40);
     const endHour = startHour + (minutes / 60)
     const planId = ref.getAttribute('planid')
-    this.updatePlan(planId, startHour, endHour)
+    this.updatePlan(planId, startHour, endHour, '')
   }
 
   onDragStart(e, d){
@@ -132,11 +189,31 @@ class Schedule extends React.Component {
     const startHour = Math.round(d.y / 40);
     const endHour = startHour + (minutes / 60)
     const planId = e.target.getAttribute('planid')
-    if (planId && startHour) {
-      this.updatePlan(planId, startHour, endHour)
+    if (planId && startHour && endHour) {
+      this.updatePlan(planId, startHour, endHour, '')
     }
   }
 
+  onDoubleClick(){
+    console.log('double clicks')
+  }
+
+  saveDescription(e){
+    let description = e.target.value
+    let plan = this.state.plan.slice(0);
+    let planID = e.target.getAttribute('planid')
+    plan[planID].description = description
+    this.setState({plan:plan})
+    this.formatText(plan)
+  }
+
+  deletePlan(e){
+    let plan = this.state.plan.slice(0);
+    let planID = e.target.getAttribute('planid')
+    plan.splice(planID, 1)
+    this.setState({plan:plan})
+    this.formatText(plan)
+  }
 
   render() {
     const times = [...Array(24).keys()];
@@ -163,33 +240,22 @@ class Schedule extends React.Component {
               />
           }) }
           { plan.map((d, idx) => {
-            return <Rnd
-              key={idx}
-              className="rnd"
-              default={{
-                x: 0,
-                y: d.startHour * 40,
-                width: '100%',
-                height: (d.endHour - d.startHour) * 40,
-              }}
-              dragAxis="y"
-              enableResizing={{
-                top: true, right: false, bottom: true, left: false,
-                topRight: false, bottomRight: false, bottomLeft: false, topLeft: false
-              }}
-              bounds="parent"
-              resizeGrid={[0, 40]}
-              dragGrid={[1, 40]}
-              minWidth="20"
+            return <Plan
+              idx={idx}
+              startHour={d.startHour}
+              endHour={d.endHour}
+              description={d.description}
               planid={idx}
-              style={{zIndex:d.zIndex}}
+              zIndex={d.zIndex}
+              description={d.description}
               onResizeStart={this.onResizeStart}
               onResizeStop={this.onResizeStop}
               onDragStart={this.onDragStart}
               onDragStop={this.onDragStop}
-            >
-              { d.description }
-            </Rnd>
+              saveDescription={this.saveDescription}
+              deletePlan={this.deletePlan}
+              isEdit={d.isEdit}
+            />
           }) }
           </Col>
         </Row>
