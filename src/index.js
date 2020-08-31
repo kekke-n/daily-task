@@ -60,7 +60,7 @@ class Plan extends React.Component {
         onDragStop={this.props.onDragStop}
       >
         <input
-          class='description'
+          className='description'
           type='textarea'
           planid={this.props.idx}
           style={{zIndex:20}}
@@ -241,6 +241,7 @@ class Schedule extends React.Component {
           }) }
           { plan.map((d, idx) => {
             return <Plan
+              key={idx}
               idx={idx}
               startHour={d.startHour}
               endHour={d.endHour}
