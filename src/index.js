@@ -139,7 +139,7 @@ class Schedule extends React.Component {
 
 
   render() {
-    const times = [...Array(25).keys()];
+    const times = [...Array(24).keys()];
     const plan = this.state.plan
     return (
       <Container fluid className='App'>
@@ -187,7 +187,9 @@ class Schedule extends React.Component {
               onResizeStop={this.onResizeStop}
               onDragStart={this.onDragStart}
               onDragStop={this.onDragStop}
-            />
+            >
+              { d.description }
+            </Rnd>
           }) }
           </Col>
         </Row>
