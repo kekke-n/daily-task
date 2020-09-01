@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import { Rnd } from 'react-rnd';
+const SQUARE_HEIGHT = 60
+const SQUARE_STEP_PX = SQUARE_HEIGHT / 4
 
 function TextArea(props) {
   return (
@@ -39,9 +41,9 @@ class Plan extends React.Component {
         className="rnd"
         default={{
           x: 0,
-          y: this.props.startHour * 40,
+          y: this.props.startHour * SQUARE_HEIGHT,
           width: '100%',
-          height: (this.props.endHour - this.props.startHour) * 40,
+          height: (this.props.endHour - this.props.startHour) * SQUARE_HEIGHT,
         }}
         dragAxis="y"
         enableResizing={{
@@ -49,8 +51,8 @@ class Plan extends React.Component {
           topRight: false, bottomRight: false, bottomLeft: false, topLeft: false
         }}
         bounds="parent"
-        resizeGrid={[0, 40]}
-        dragGrid={[1, 40]}
+        resizeGrid={[0, SQUARE_STEP_PX]}
+        dragGrid={[1, SQUARE_STEP_PX]}
         minWidth="20"
         planid={this.props.idx}
         style={{zIndex:this.props.zIndex}}
@@ -119,6 +121,8 @@ class Schedule extends React.Component {
         description: '',
         startHour:  startHour,
         endHour:  endHour,
+        startMinute:  '00',
+        endMinute:  '00',
       }
     )
     this.setState({plan: plan})
@@ -138,15 +142,17 @@ class Schedule extends React.Component {
       return 0
     })
     let text = sortedPlan.map((d, i) => {
-      return d.startHour + ':00 - ' + d.endHour + ':00 ' + d.description
+      return d.startHour + ':' + d.startMinute  + '-' + d.endHour + ':' + d.endMinute + ' ' + d.description
     }).join("\n")
     this.setState({text: text})
   }
 
-  updatePlan(planId, startHour, endHour, description){
+  updatePlan(planId, startHour, endHour, startMinute, endMinute, description){
     let plan = this.state.plan.slice(0);
     plan[planId].startHour = startHour
     plan[planId].endHour = endHour
+    plan[planId].startMinute = startMinute
+    plan[planId].endMinute = endMinute
     if(description != ''){
       plan[planId].description = description
     }
@@ -172,11 +178,9 @@ class Schedule extends React.Component {
   }
 
   onResizeStop(e, d, ref, delta, position){
-    const minutes = Math.floor(parseInt(ref.style.height, 10) / 40) * 60;
-    const startHour = Math.round(position.y / 40);
-    const endHour = startHour + (minutes / 60)
+    const t = this.calculatePlanTime(ref.style.height, position.y)
     const planId = ref.getAttribute('planid')
-    this.updatePlan(planId, startHour, endHour, '')
+    this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute, '')
   }
 
   onDragStart(e, d){
@@ -185,17 +189,42 @@ class Schedule extends React.Component {
   }
 
   onDragStop(e, d){
-    const minutes = Math.floor(parseInt(e.target.style.height, 10) / 40) * 60;
-    const startHour = Math.round(d.y / 40);
-    const endHour = startHour + (minutes / 60)
+    const t = this.calculatePlanTime(e.target.style.height, d.y)
     const planId = e.target.getAttribute('planid')
-    if (planId && startHour && endHour) {
-      this.updatePlan(planId, startHour, endHour, '')
+    if (planId && t.startHour && t.endHour) {
+      this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute,  '')
     }
   }
 
   onDoubleClick(){
     console.log('double clicks')
+  }
+
+  calculatePlanTime(height, postition){
+    const minutes = Math.floor(parseInt(height, 10) / SQUARE_HEIGHT) * 60;
+    console.log('postition : ' + postition)
+    console.log('postition / SQUARE_HEIGHT : ' + postition / SQUARE_HEIGHT)
+    const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
+    const endHour = startHour + (minutes / 60)
+    const step = Math.round((postition % SQUARE_HEIGHT) / SQUARE_STEP_PX )
+    let startMinute = (Math.round((postition % SQUARE_HEIGHT) / SQUARE_STEP_PX ) * SQUARE_STEP_PX) % 60
+    let endMinute = (startMinute + minutes) % 60
+    startMinute = ('00' + startMinute).slice(-2)
+    endMinute = ('00' + endMinute).slice(-2)
+    console.log('-----------------------------')
+    console.log('minutes : ' + minutes)
+    console.log('startHour : ' + startHour)
+    console.log('endHour : ' + endHour)
+    console.log('startMinute : ' + startMinute)
+    console.log('endMinute : ' + endMinute)
+    console.log('step : ' + step)
+    return {
+      minutes: minutes,
+      startHour: startHour,
+      endHour: endHour,
+      startMinute: startMinute,
+      endMinute: endMinute,
+    }
   }
 
   saveDescription(e){

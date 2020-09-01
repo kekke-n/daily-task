@@ -6,8 +6,8 @@ body {
 .time {
   background: #fff;
   border: 0.1px  #999;
-  line-height: 40px;
-  height: 40px;
+  line-height: 60px;
+  height: 60px;
   padding: 0;
   text-align: center;
 }
@@ -17,8 +17,8 @@ body {
   border: 0.1px solid #999;
   font-size: 24px;
   font-weight: bold;
-  line-height: 40px;
-  height: 40px;
+  line-height: 60px;
+  height: 60px;
   margin-right: -1px;
   padding: 0;
   text-align: center;
