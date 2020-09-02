@@ -217,18 +217,19 @@ class Schedule extends React.Component {
     let endMinute = (startMinute + minutes) % 60
     startMinute = ('00' + startMinute).slice(-2)
     endMinute = ('00' + endMinute).slice(-2)
-    console.log('-----------------------------')
-    console.log('SQUARE_HEIGHT : ' + SQUARE_HEIGHT)
-    console.log('UNIT_HEIGHT : ' + UNIT_HEIGHT)
-    console.log('height : ' + height)
-    console.log('postition : ' + postition)
-    console.log('unit : ' + unit)
-    console.log('minutes : ' + minutes)
-    console.log('startHour : ' + startHour)
-    console.log('endHour : ' + endHour)
-    console.log('startMinute : ' + startMinute)
-    console.log('endMinute : ' + endMinute)
-    console.log('step : ' + step)
+    // for debug
+    // console.log('-----------------------------')
+    // console.log('SQUARE_HEIGHT : ' + SQUARE_HEIGHT)
+    // console.log('UNIT_HEIGHT : ' + UNIT_HEIGHT)
+    // console.log('height : ' + height)
+    // console.log('postition : ' + postition)
+    // console.log('unit : ' + unit)
+    // console.log('minutes : ' + minutes)
+    // console.log('startHour : ' + startHour)
+    // console.log('endHour : ' + endHour)
+    // console.log('startMinute : ' + startMinute)
+    // console.log('endMinute : ' + endMinute)
+    // console.log('step : ' + step)
     return {
       minutes: minutes,
       startHour: startHour,
