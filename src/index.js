@@ -56,7 +56,7 @@ class Plan extends React.Component {
         resizeGrid={[0, UNIT_HEIGHT]}
         dragGrid={[1, UNIT_HEIGHT]}
         minWidth="20"
-        planid={this.props.idx}
+        plankey={this.props.plankey}
         style={{zIndex:this.props.zIndex}}
         onResizeStart={this.props.onResizeStart}
         onResizeStop={this.props.onResizeStop}
@@ -66,12 +66,12 @@ class Plan extends React.Component {
         <input
           className='description'
           type='textarea'
-          planid={this.props.idx}
+          plankey={this.props.plankey}
           style={{zIndex:20}}
           onKeyUp={this.props.saveDescription}
         />
         <button
-          planid={this.props.idx}
+          plankey={this.props.plankey}
           onClick={this.props.deletePlan}
         >
           delete
@@ -85,6 +85,7 @@ class Schedule extends React.Component {
     super(props);
     this.state = {
       text: '',
+      planKey: 0,
       plan: [],
       // 動作確認用
       // plan: [
@@ -118,8 +119,10 @@ class Schedule extends React.Component {
 
   createPlan(startHour, endHour){
     let plan = this.state.plan.slice(0)
+    let planKey = this.state.planKey
     plan.push(
       {
+        key: planKey,
         description: '',
         startHour:  startHour,
         endHour:  endHour,
@@ -129,7 +132,7 @@ class Schedule extends React.Component {
         hours: 1,
       }
     )
-    this.setState({plan: plan})
+    this.setState({plan: plan, planKey: ++planKey})
     this.formatText(plan);
   }
 
@@ -159,56 +162,62 @@ class Schedule extends React.Component {
     this.setState({text: text})
   }
 
-  updatePlan(planId, startHour, endHour, startMinute, endMinute, minutes, hours, description){
+  updatePlan(planKey, startHour, endHour, startMinute, endMinute, minutes, hours, description){
     let plan = this.state.plan.slice(0);
-    plan[planId].startHour = startHour
-    plan[planId].endHour = endHour
-    plan[planId].startMinute = startMinute
-    plan[planId].endMinute = endMinute
-    plan[planId].minutes = minutes
-    plan[planId].hours = hours
-    if(description != ''){
-      plan[planId].description = description
-    }
+    plan = plan.map(p => {
+      if(p.key == planKey){
+        p.startHour = startHour
+        p.endHour = endHour
+        p.startMinute = startMinute
+        p.endMinute = endMinute
+        p.minutes = minutes
+        p.hours = hours
+        if(description != ''){
+          plan.description = description
+        }
+      }
+      return p
+    })
     this.setState({ plan: plan })
     this.formatText(plan)
   }
 
-  updateZindex(planId){
+  updateZindex(planKey){
     let plan = this.state.plan.slice(0);
-    plan.map((d) => {
-      d.zIndex = 0;
-      return d
+    plan = plan.map((p) => {
+      if(p.key == planKey){
+        p.zIndex = 10;
+      }else{
+        p.zIndex = 0;
+      }
+      return p
     })
-    if(plan[planId]){
-      plan[planId].zIndex = 10;
-      this.setState({ plan: plan })
-    }
+    this.setState({ plan: plan })
   }
 
   onResizeStart(e, direction, ref){
-    const planId = ref.getAttribute('planid')
-    this.updateZindex(planId)
+    const planKey = ref.getAttribute('plankey')
+    this.updateZindex(planKey)
   }
 
   onResizeStop(e, d, ref, delta, position){
     const height = parseInt(ref.style.height, 10)
     const t = this.calculatePlanTime(height, position.y)
-    const planId = ref.getAttribute('planid')
-    this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute, t.minutes, t.hours, '')
+    const planKey = ref.getAttribute('plankey')
+    this.updatePlan(planKey, t.startHour, t.endHour, t.startMinute, t.endMinute, t.minutes, t.hours, '')
   }
 
   onDragStart(e, d){
-    const planId = e.target.getAttribute('planid')
-    this.updateZindex(planId)
+    const planKey = e.target.getAttribute('plankey')
+    this.updateZindex(planKey)
   }
 
   onDragStop(e, d){
     const height = parseInt(e.target.style.height, 10)
     const t = this.calculatePlanTime(height, d.y)
-    const planId = e.target.getAttribute('planid')
-    if (planId && t.startHour && t.endHour) {
-      this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute, t.minutes, t.hours,  '')
+    const planKey = e.target.getAttribute('plankey')
+    if (planKey && t.startHour && t.endHour) {
+      this.updatePlan(planKey, t.startHour, t.endHour, t.startMinute, t.endMinute, t.minutes, t.hours,  '')
     }
   }
 
@@ -251,16 +260,24 @@ class Schedule extends React.Component {
   saveDescription(e){
     let description = e.target.value
     let plan = this.state.plan.slice(0);
-    let planID = e.target.getAttribute('planid')
-    plan[planID].description = description
+    let planKey = e.target.getAttribute('plankey')
+    plan = plan.map((p) => {
+      if(p.key == planKey){
+        p.description = description
+      }
+      return p
+    })
     this.setState({plan:plan})
     this.formatText(plan)
   }
 
   deletePlan(e){
     let plan = this.state.plan.slice(0);
-    let planID = e.target.getAttribute('planid')
-    plan.splice(planID, 1)
+    let planKey = e.target.getAttribute('plankey')
+    debugger
+    plan = plan.filter((p) => {
+      return p.key != planKey
+    })
     this.setState({plan:plan})
     this.formatText(plan)
   }
@@ -293,12 +310,11 @@ class Schedule extends React.Component {
               }) }
               { plan.map((d, idx) => {
                 return <Plan
-                  key={idx}
-                  idx={idx}
+                  key={d.key}
+                  plankey={d.key}
                   startHour={d.startHour}
                   endHour={d.endHour}
                   description={d.description}
-                  planid={idx}
                   zIndex={d.zIndex}
                   description={d.description}
                   onResizeStart={this.onResizeStart}
