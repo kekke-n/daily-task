@@ -148,7 +148,7 @@ class Schedule extends React.Component {
       if(a.startHour > b.startHour) return 1
       if(a.startHour = b.startHour){
         if(a.startMinute < b.endMinute) return -1
-        if(a.startMinute > b.endMinute) return -1
+        if(a.startMinute > b.endMinute) return 1
       }
       return 0
     })
