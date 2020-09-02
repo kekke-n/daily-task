@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import { Rnd } from 'react-rnd';
-const SQUARE_HEIGHT = 60
+const SQUARE_HEIGHT = 80
 const UNIT_NUM_IN_SQUARE = 4
 const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 
@@ -210,7 +210,7 @@ class Schedule extends React.Component {
   calculatePlanTime(height, postition){
     const unit = height / UNIT_HEIGHT
     const step = unit % UNIT_NUM_IN_SQUARE
-    const minutes = unit * UNIT_HEIGHT
+    const minutes = (unit * UNIT_HEIGHT) / SQUARE_HEIGHT * 60
     const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
     const endHour = startHour + Math.floor(minutes / 60)
     let startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_HEIGHT) % 60
@@ -267,40 +267,44 @@ class Schedule extends React.Component {
           <Col xs={5}>
             <TextArea text={this.state.text} onChange={(e) => this.changeText(e)}/>
           </Col>
-          <Col xs={1}>
-          { times.map((d, idx) => {
-            return <Time key={idx} time={d + ':00'}/>
-          }) }
-          </Col>
-          <Col xs={6}>
-          { times.map((d, idx) => {
-            return <Square
-                key={idx}
-                startTime={d + ':00'}
-                endTime={d+1 + ':00'}
-                description=''
-                onClick={(index, startTime, endTime) => this.createPlan(d, d+1)}
-              />
-          }) }
-          { plan.map((d, idx) => {
-            return <Plan
-              key={idx}
-              idx={idx}
-              startHour={d.startHour}
-              endHour={d.endHour}
-              description={d.description}
-              planid={idx}
-              zIndex={d.zIndex}
-              description={d.description}
-              onResizeStart={this.onResizeStart}
-              onResizeStop={this.onResizeStop}
-              onDragStart={this.onDragStart}
-              onDragStop={this.onDragStop}
-              saveDescription={this.saveDescription}
-              deletePlan={this.deletePlan}
-              isEdit={d.isEdit}
-            />
-          }) }
+          <Col xs={6} className='plan'>
+            <Row>
+              <Col xs={2}>
+                { times.map((d, idx) => {
+                  return <Time key={idx} time={d + ':00'}/>
+                }) }
+              </Col>
+              <Col xs={10}>
+              { times.map((d, idx) => {
+                return <Square
+                    key={idx}
+                    startTime={d + ':00'}
+                    endTime={d+1 + ':00'}
+                    description=''
+                    onClick={(index, startTime, endTime) => this.createPlan(d, d+1)}
+                  />
+              }) }
+              { plan.map((d, idx) => {
+                return <Plan
+                  key={idx}
+                  idx={idx}
+                  startHour={d.startHour}
+                  endHour={d.endHour}
+                  description={d.description}
+                  planid={idx}
+                  zIndex={d.zIndex}
+                  description={d.description}
+                  onResizeStart={this.onResizeStart}
+                  onResizeStop={this.onResizeStop}
+                  onDragStart={this.onDragStart}
+                  onDragStop={this.onDragStop}
+                  saveDescription={this.saveDescription}
+                  deletePlan={this.deletePlan}
+                  isEdit={d.isEdit}
+                />
+              }) }
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>
