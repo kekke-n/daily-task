@@ -4,12 +4,17 @@ body {
 }
 
 .time {
+  position: relative;
   background: #fff;
   border: 0.1px  #999;
-  line-height: 80px;
   height: 80px;
   padding: 0;
   text-align: center;
+}
+
+.time span{
+  position: absolute;
+  top: -10px;
 }
 
 .square {
