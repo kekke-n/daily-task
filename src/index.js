@@ -5,7 +5,8 @@ import './index.css';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import { Rnd } from 'react-rnd';
 const SQUARE_HEIGHT = 60
-const SQUARE_STEP_PX = SQUARE_HEIGHT / 4
+const UNIT_NUM_IN_SQUARE = 4
+const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 
 function TextArea(props) {
   return (
@@ -51,8 +52,8 @@ class Plan extends React.Component {
           topRight: false, bottomRight: false, bottomLeft: false, topLeft: false
         }}
         bounds="parent"
-        resizeGrid={[0, SQUARE_STEP_PX]}
-        dragGrid={[1, SQUARE_STEP_PX]}
+        resizeGrid={[0, UNIT_HEIGHT]}
+        dragGrid={[1, UNIT_HEIGHT]}
         minWidth="20"
         planid={this.props.idx}
         style={{zIndex:this.props.zIndex}}
@@ -123,6 +124,8 @@ class Schedule extends React.Component {
         endHour:  endHour,
         startMinute:  '00',
         endMinute:  '00',
+        minuites: 60,
+        hours: 1,
       }
     )
     this.setState({plan: plan})
@@ -142,17 +145,19 @@ class Schedule extends React.Component {
       return 0
     })
     let text = sortedPlan.map((d, i) => {
-      return d.startHour + ':' + d.startMinute  + '-' + d.endHour + ':' + d.endMinute + ' ' + d.description
+      return d.startHour + ':' + d.startMinute  + ' - ' + d.endHour + ':' + d.endMinute + ' (' + d.hours + ' h) ' + d.description
     }).join("\n")
     this.setState({text: text})
   }
 
-  updatePlan(planId, startHour, endHour, startMinute, endMinute, description){
+  updatePlan(planId, startHour, endHour, startMinute, endMinute, minuites, hours, description){
     let plan = this.state.plan.slice(0);
     plan[planId].startHour = startHour
     plan[planId].endHour = endHour
     plan[planId].startMinute = startMinute
     plan[planId].endMinute = endMinute
+    plan[planId].minuites = minuites
+    plan[planId].hours = hours
     if(description != ''){
       plan[planId].description = description
     }
@@ -178,9 +183,10 @@ class Schedule extends React.Component {
   }
 
   onResizeStop(e, d, ref, delta, position){
-    const t = this.calculatePlanTime(ref.style.height, position.y)
+    const height = parseInt(ref.style.height, 10)
+    const t = this.calculatePlanTime(height, position.y)
     const planId = ref.getAttribute('planid')
-    this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute, '')
+    this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute, t.minuites, t.hours, '')
   }
 
   onDragStart(e, d){
@@ -189,10 +195,11 @@ class Schedule extends React.Component {
   }
 
   onDragStop(e, d){
-    const t = this.calculatePlanTime(e.target.style.height, d.y)
+    const height = parseInt(e.target.style.height, 10)
+    const t = this.calculatePlanTime(height, d.y)
     const planId = e.target.getAttribute('planid')
     if (planId && t.startHour && t.endHour) {
-      this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute,  '')
+      this.updatePlan(planId, t.startHour, t.endHour, t.startMinute, t.endMinute, t.minuites, t.hours,  '')
     }
   }
 
@@ -201,17 +208,21 @@ class Schedule extends React.Component {
   }
 
   calculatePlanTime(height, postition){
-    const minutes = Math.floor(parseInt(height, 10) / SQUARE_HEIGHT) * 60;
-    console.log('postition : ' + postition)
-    console.log('postition / SQUARE_HEIGHT : ' + postition / SQUARE_HEIGHT)
+    const unit = height / UNIT_HEIGHT
+    const step = unit % UNIT_NUM_IN_SQUARE
+    const minutes = unit * UNIT_HEIGHT
     const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
-    const endHour = startHour + (minutes / 60)
-    const step = Math.round((postition % SQUARE_HEIGHT) / SQUARE_STEP_PX )
-    let startMinute = (Math.round((postition % SQUARE_HEIGHT) / SQUARE_STEP_PX ) * SQUARE_STEP_PX) % 60
+    const endHour = startHour + Math.floor(minutes / 60)
+    let startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_HEIGHT) % 60
     let endMinute = (startMinute + minutes) % 60
     startMinute = ('00' + startMinute).slice(-2)
     endMinute = ('00' + endMinute).slice(-2)
     console.log('-----------------------------')
+    console.log('SQUARE_HEIGHT : ' + SQUARE_HEIGHT)
+    console.log('UNIT_HEIGHT : ' + UNIT_HEIGHT)
+    console.log('height : ' + height)
+    console.log('postition : ' + postition)
+    console.log('unit : ' + unit)
     console.log('minutes : ' + minutes)
     console.log('startHour : ' + startHour)
     console.log('endHour : ' + endHour)
@@ -224,6 +235,8 @@ class Schedule extends React.Component {
       endHour: endHour,
       startMinute: startMinute,
       endMinute: endMinute,
+      minuites: minutes,
+      hours: minutes / 60,
     }
   }
 
