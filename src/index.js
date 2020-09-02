@@ -221,10 +221,6 @@ class Schedule extends React.Component {
     }
   }
 
-  onDoubleClick(){
-    console.log('double clicks')
-  }
-
   calculatePlanTime(height, postition){
     const unit = height / UNIT_HEIGHT
     const step = unit % UNIT_NUM_IN_SQUARE
@@ -274,7 +270,6 @@ class Schedule extends React.Component {
   deletePlan(e){
     let plan = this.state.plan.slice(0);
     let planKey = e.target.getAttribute('plankey')
-    debugger
     plan = plan.filter((p) => {
       return p.key != planKey
     })
