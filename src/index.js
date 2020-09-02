@@ -7,7 +7,7 @@ import { Rnd } from 'react-rnd';
 const SQUARE_HEIGHT = 80
 const UNIT_NUM_IN_SQUARE = 4
 const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
-const UNIT_HOURS = 60 / UNIT_NUM_IN_SQUARE
+const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
 function TextArea(props) {
   return (
@@ -43,9 +43,9 @@ class Plan extends React.Component {
         className="rnd"
         default={{
           x: 0,
-          y: this.props.startHour * SQUARE_HEIGHT,
+          y: (this.props.startHour * SQUARE_HEIGHT) + (this.props.startMinute/UNIT_MINUTES * UNIT_HEIGHT),
           width: '100%',
-          height: (this.props.endHour - this.props.startHour) * SQUARE_HEIGHT,
+          height: (this.props.minutes / UNIT_MINUTES) * UNIT_HEIGHT,
         }}
         dragAxis="y"
         enableResizing={{
@@ -64,11 +64,13 @@ class Plan extends React.Component {
         onDragStop={this.props.onDragStop}
       >
         <input
+          type='text'
           className='description'
-          type='textarea'
           plankey={this.props.plankey}
           style={{zIndex:20}}
           onKeyUp={this.props.saveDescription}
+          rows={1}
+          defaultValue={this.props.description}
         />
         <button
           plankey={this.props.plankey}
@@ -84,26 +86,9 @@ class Schedule extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      text: '',
-      planKey: 0,
-      plan: [],
-      // 動作確認用
-      // plan: [
-      //   {
-      //     description: 'task 1',
-      //     startHour:  9,
-      //     endHour:  11,
-      //     zIndex: 10,
-      //     isEdit: false,
-      //   },
-      //   {
-      //     description: 'task 2',
-      //     startHour:  12,
-      //     endHour:  17,
-      //     zIndex: 0,
-      //     isEdit: false,
-      //   }
-      // ]
+      text: localStorage.getItem("text") ?? '',
+      planKey: localStorage.getItem("planKey") ?? 0,
+      plan: JSON.parse(localStorage.getItem("plan")) ?? [],
     }
     this.onResizeStart = this.onResizeStart.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
@@ -133,11 +118,51 @@ class Schedule extends React.Component {
       }
     )
     this.setState({plan: plan, planKey: ++planKey})
-    this.formatText(plan);
+    const text = this.formatText(plan)
+    this.updateLocalStorage(text, plan, planKey);
+  }
+
+  updatePlan(planKey, startHour, endHour, startMinute, endMinute, minutes, hours, description){
+    let plan = this.state.plan.slice(0);
+    plan = plan.map(p => {
+      if(p.key == planKey){
+        p.startHour = startHour
+        p.endHour = endHour
+        p.startMinute = startMinute
+        p.endMinute = endMinute
+        p.minutes = minutes
+        p.hours = hours
+        if(description != ''){
+          plan.description = description
+        }
+      }
+      return p
+    })
+    this.setState({ plan: plan })
+    const text = this.formatText(plan)
+    this.updateLocalStorage(text, plan, this.state.planKey);
+  }
+
+  deletePlan(e){
+    let plan = this.state.plan.slice(0);
+    let planKey = e.target.getAttribute('plankey')
+    plan = plan.filter((p) => {
+      return p.key != planKey
+    })
+    this.setState({plan:plan})
+    const text = this.formatText(plan)
+    this.updateLocalStorage(text, plan, this.state.planKey);
+  }
+
+  updateLocalStorage(text, plan, planKey){
+    localStorage.setItem("text", text)
+    localStorage.setItem("plan", JSON.stringify(plan))
+    localStorage.setItem("planKey", planKey)
   }
 
   changeText(e){
     this.setState({text: e.target.value})
+    this.updateLocalStorage(e.target.value, this.state.plan, this.state.planKey);
   }
 
   formatText(plan){
@@ -160,26 +185,7 @@ class Schedule extends React.Component {
       return d.startHour + ':' + startMinute  + ' - ' + d.endHour + ':' + endMinute + ' (' + hours + 'h ' + minutes + 'm) ' + d.description
     }).join("\n")
     this.setState({text: text})
-  }
-
-  updatePlan(planKey, startHour, endHour, startMinute, endMinute, minutes, hours, description){
-    let plan = this.state.plan.slice(0);
-    plan = plan.map(p => {
-      if(p.key == planKey){
-        p.startHour = startHour
-        p.endHour = endHour
-        p.startMinute = startMinute
-        p.endMinute = endMinute
-        p.minutes = minutes
-        p.hours = hours
-        if(description != ''){
-          plan.description = description
-        }
-      }
-      return p
-    })
-    this.setState({ plan: plan })
-    this.formatText(plan)
+    return text
   }
 
   updateZindex(planKey){
@@ -226,7 +232,7 @@ class Schedule extends React.Component {
     const step = unit % UNIT_NUM_IN_SQUARE
     const minutes = (unit * UNIT_HEIGHT) / SQUARE_HEIGHT * 60
     const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
-    let startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_HOURS) % 60
+    let startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_MINUTES) % 60
     const endHour = startHour + Math.floor((startMinute + minutes) / 60)
     let endMinute = (startMinute + minutes) % 60
     // for debug
@@ -264,17 +270,8 @@ class Schedule extends React.Component {
       return p
     })
     this.setState({plan:plan})
-    this.formatText(plan)
-  }
-
-  deletePlan(e){
-    let plan = this.state.plan.slice(0);
-    let planKey = e.target.getAttribute('plankey')
-    plan = plan.filter((p) => {
-      return p.key != planKey
-    })
-    this.setState({plan:plan})
-    this.formatText(plan)
+    const text = this.formatText(plan)
+    this.updateLocalStorage(text, plan, this.state.planKey);
   }
 
   render() {
@@ -309,6 +306,8 @@ class Schedule extends React.Component {
                   plankey={d.key}
                   startHour={d.startHour}
                   endHour={d.endHour}
+                  startMinute={d.startMinute}
+                  minutes={d.minutes}
                   description={d.description}
                   zIndex={d.zIndex}
                   description={d.description}
