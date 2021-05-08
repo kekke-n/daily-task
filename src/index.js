@@ -249,7 +249,6 @@ class Schedule extends React.Component {
     // console.log('endMinute : ' + endMinute)
     // console.log('step : ' + step)
     return {
-      minutes: minutes,
       startHour: startHour,
       endHour: endHour,
       startMinute: startMinute,
