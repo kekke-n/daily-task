@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import {Container, Row, Col, Form, Button} from 'react-bootstrap';
+import {Container, Row, Col, Form} from 'react-bootstrap';
 import { Rnd } from 'react-rnd';
 const SQUARE_HEIGHT = 80
 const UNIT_NUM_IN_SQUARE = 4
@@ -125,14 +125,14 @@ class Schedule extends React.Component {
   updatePlan(planKey, startHour, endHour, startMinute, endMinute, minutes, hours, description){
     let plan = this.state.plan.slice(0);
     plan = plan.map(p => {
-      if(p.key == planKey){
+      if(p.key === planKey){
         p.startHour = startHour
         p.endHour = endHour
         p.startMinute = startMinute
         p.endMinute = endMinute
         p.minutes = minutes
         p.hours = hours
-        if(description != ''){
+        if(description !== ''){
           plan.description = description
         }
       }
@@ -147,7 +147,7 @@ class Schedule extends React.Component {
     let plan = this.state.plan.slice(0);
     let planKey = e.target.getAttribute('plankey')
     plan = plan.filter((p) => {
-      return p.key != planKey
+      return p.key !== planKey
     })
     this.setState({plan:plan})
     const text = this.formatText(plan)
@@ -171,7 +171,7 @@ class Schedule extends React.Component {
     sortedPlan.sort(function(a,b){
       if(a.startHour < b.startHour) return -1
       if(a.startHour > b.startHour) return 1
-      if(a.startHour = b.startHour){
+      if(a.startHour === b.startHour){
         if(a.startMinute < b.endMinute) return -1
         if(a.startMinute > b.endMinute) return 1
       }
@@ -191,7 +191,7 @@ class Schedule extends React.Component {
   updateZindex(planKey){
     let plan = this.state.plan.slice(0);
     plan = plan.map((p) => {
-      if(p.key == planKey){
+      if(p.key === planKey){
         p.zIndex = 10;
       }else{
         p.zIndex = 0;
@@ -229,7 +229,7 @@ class Schedule extends React.Component {
 
   calculatePlanTime(height, postition){
     const unit = height / UNIT_HEIGHT
-    const step = unit % UNIT_NUM_IN_SQUARE
+    // const step = unit % UNIT_NUM_IN_SQUARE
     const minutes = (unit * UNIT_HEIGHT) / SQUARE_HEIGHT * 60
     const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
     let startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_MINUTES) % 60
@@ -263,7 +263,7 @@ class Schedule extends React.Component {
     let plan = this.state.plan.slice(0);
     let planKey = e.target.getAttribute('plankey')
     plan = plan.map((p) => {
-      if(p.key == planKey){
+      if(p.key === planKey){
         p.description = description
       }
       return p
@@ -309,7 +309,6 @@ class Schedule extends React.Component {
                   minutes={d.minutes}
                   description={d.description}
                   zIndex={d.zIndex}
-                  description={d.description}
                   onResizeStart={this.onResizeStart}
                   onResizeStop={this.onResizeStop}
                   onDragStart={this.onDragStart}
@@ -328,9 +327,37 @@ class Schedule extends React.Component {
   }
 }
 
+class App extends React.Component {
+  get axios() {
+    const axiosBase = require('axios');
+    return axiosBase.create({
+      baseURL: process.env.REACT_APP_DEV_API_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      responseType: 'json'
+    });
+  }
+
+  render() {
+    this.axios.get('/tasks')
+      .then(results => {
+        console.log(results);
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    return (
+      <Schedule />
+    )
+  }
+}
 // ========================================
 
 ReactDOM.render(
-  <Schedule />,
+  <App />,
   document.getElementById('root')
 );
+
