@@ -36,8 +36,7 @@ class Plan extends React.Component {
         onDragStart={this.props.onDragStart}
         onDragStop={this.props.onDragStop}
       >
-        <input
-          type='text'
+        <textarea
           className='description'
           plankey={this.props.plankey}
           style={{zIndex:20}}
