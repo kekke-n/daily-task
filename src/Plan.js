@@ -45,10 +45,11 @@ class Plan extends React.Component {
           defaultValue={this.props.description}
         />
         <button
+          className='btn brn-light delete-btn'
           plankey={this.props.plankey}
           onClick={this.props.deletePlan}
         >
-          delete
+          ✕
         </button>
       </Rnd>
     )
