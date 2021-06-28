@@ -79,7 +79,7 @@ class Schedule extends React.Component {
     let plan = this.state.plan.slice(0);
     let planKey = e.target.getAttribute('plankey')
     plan = plan.filter((p) => {
-      return p.key !== planKey
+      return p.key !== Number(planKey)
     })
     this.setState({plan:plan})
     const text = this.formatText(plan)
