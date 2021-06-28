@@ -221,7 +221,7 @@ class Schedule extends React.Component {
                   return <Time key={idx} time={d + ':00'}/>
                 }) }
               </Col>
-              <Col xs={10}>
+              <Col xs={10} className='px-0'>
                 { times.map((d, idx) => {
                   return <Square
                     key={idx}
