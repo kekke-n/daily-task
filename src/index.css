@@ -44,6 +44,7 @@ body {
 .rnd {
   border: 2px solid white;
   background: #007bff;
+  border-radius: 10px;
 }
 .description {
   width: 85%
