@@ -36,7 +36,7 @@ class Schedule extends React.Component {
 
   createPlan(startHour, endHour){
     let plan = this.state.plan.slice(0)
-    let planKey = this.state.planKey
+    let planKey = this.state.planKey.toString()
     plan.push(
       {
         key: planKey,

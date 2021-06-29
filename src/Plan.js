@@ -39,7 +39,10 @@ class Plan extends React.Component {
         <textarea
           className='description'
           plankey={this.props.plankey}
-          style={{zIndex:20}}
+          style={{
+            zIndex:20,
+            height: (this.props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
+          }}
           onKeyUp={this.props.saveDescription}
           rows={1}
           defaultValue={this.props.description}
