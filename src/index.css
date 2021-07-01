@@ -64,3 +64,7 @@ body {
   overflow: scroll;
   height: 100vh;
 }
+
+.text-plan pre{
+  font-size :1em;
+}

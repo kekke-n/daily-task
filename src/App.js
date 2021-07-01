@@ -19,13 +19,14 @@ class App extends React.Component {
   }
 
   render() {
-    this.axios.get('/tasks')
-      .then(results => {
-        console.log(results);
-      })
-      .catch(data => {
-        console.log(data);
-      });
+    // TODO:バックエンドの実装
+    // this.axios.get('/tasks')
+    //   .then(results => {
+    //     console.log(results);
+    //   })
+    //   .catch(data => {
+    //     console.log(data);
+    //   });
     return (
       <Schedule />
     )

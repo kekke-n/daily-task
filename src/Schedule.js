@@ -4,7 +4,7 @@ import './index.css';
 import {Container, Row, Col} from 'react-bootstrap';
 
 import Plan from './Plan'
-import TextArea from './TextArea'
+import TextPlan from './TextPlan'
 import Time from './Time'
 import Square from './Square'
 
@@ -211,10 +211,10 @@ class Schedule extends React.Component {
     return (
       <Container fluid className='App'>
         <Row>
-          <Col xs={5}>
-            <TextArea text={this.state.text} onChange={(e) => this.changeText(e)}/>
+          <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
+            <TextPlan text={this.state.text} onChange={(e) => this.changeText(e)}/>
           </Col>
-          <Col xs={6} className='plan'>
+          <Col sm={6} xl={4} className='plan'>
             <Row>
               <Col xs={2}>
                 { times.map((d, idx) => {
