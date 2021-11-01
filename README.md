@@ -6,4 +6,5 @@
 
 [サンプルページ](https://daily-task-react.herokuapp.com/)
 
-![image](https://user-images.githubusercontent.com/7373564/123645456-52f2c000-d861-11eb-9c0f-de06d84a3117.png)
+![image](https://user-images.githubusercontent.com/7373564/139700640-ac9007ff-597a-4ddf-90b8-279797d56c77.png)
+
