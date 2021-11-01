@@ -18,9 +18,9 @@ class Schedule extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      text: localStorage.getItem("text") ?? '',
-      planKey: localStorage.getItem("planKey") ?? 0,
-      plan: JSON.parse(localStorage.getItem("plan")) ?? [],
+      text: props.text,
+      planKey: props.planKey,
+      plan: props.plan,
     }
     this.onResizeStart = this.onResizeStart.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
