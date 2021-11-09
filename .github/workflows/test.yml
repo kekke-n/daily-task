@@ -22,12 +22,9 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - run: node -v
+      - run: yarn -v
       - uses: actions/checkout@v2
-
-      - name: Run a one-line script
-        run: yarn install
-
-      - name: Run a one-line script
-        run: yarn test
+      - run: yarn install
+      - run: yarn run test
 
