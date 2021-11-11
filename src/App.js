@@ -54,7 +54,8 @@ export default function App(){
   }
 
   const createPlan = (startHour, endHour) => {
-    plan.slice(0).push(
+    const updatedPlan = plan.slice(0)
+    updatedPlan.push(
       {
         key: planKey.toString(),
         description: '',
@@ -66,11 +67,10 @@ export default function App(){
         hours: 1,
       }
     )
-    setPlan(plan)
-    console.log(Number(planKey))
+    setPlan(updatedPlan)
     setPlanKey(Number(planKey) + 1)
-    const text = formatText(plan)
-    updateLocalStorage(text, plan, Number(planKey) + 1);
+    const text = formatText(updatedPlan)
+    updateLocalStorage(text, updatedPlan, Number(planKey) + 1);
   }
 
   const updatePlan =
