@@ -7,6 +7,7 @@ import TextPlan from "./TextPlan";
 import Time from "./Time";
 import Square from "./Square";
 import Plan from "./Plan";
+import {usePlan} from "./hooks/usePlan";
 
 // class App extends React.Component {
 //   // get axios() {
@@ -47,12 +48,14 @@ const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 export default function App(){
   const [text, setText] = useState(localStorage.getItem("text") ?? '')
   const [planKey, setPlanKey] = useState(localStorage.getItem("planKey") ?? 0)
-  const [plan, setPlan] = useState(JSON.parse(localStorage.getItem("plan")) ?? [])
+  const {plan, setPlan} = usePlan()
 
   const UNSAFE_componentWillMount = () => {
     formatText(plan);
   }
 
+  // ヒント：フック間で情報を受け渡す
+  // https://ja.reactjs.org/docs/hooks-custom.html#tip-pass-information-between-hooks
   const createPlan = (startHour, endHour) => {
     const updatedPlan = plan.slice(0)
     updatedPlan.push(
