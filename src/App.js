@@ -25,7 +25,7 @@ export default function App(){
       }
       return 0
     })
-    let text = sortedPlan.map((d, i) => {
+    const text = sortedPlan.map((d, i) => {
       const startMinute = ('00' + d.startMinute).slice(-2)
       const endMinute = ('00' + d.endMinute).slice(-2)
       const hours = Math.floor(d.hours)
@@ -35,8 +35,6 @@ export default function App(){
     return text
   }
 
-  // ヒント：フック間で情報を受け渡す
-  // https://ja.reactjs.org/docs/hooks-custom.html#tip-pass-information-between-hooks
   const {
     plan,
     setPlan,
@@ -86,8 +84,8 @@ export default function App(){
 
 
   const saveDescription = (e) => {
-    let description = e.target.value
-    let planKey = e.target.getAttribute('plankey')
+    const description = e.target.value
+    const planKey = e.target.getAttribute('plankey')
     const updatedPlan = plan.slice(0).map((p) => {
       if(p.key === planKey){
         p.description = description

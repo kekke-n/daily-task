@@ -50,7 +50,7 @@ export const usePlan = () => {
     }
 
   const deletePlan = (e) => {
-    let planKey = e.target.getAttribute('plankey')
+    const planKey = e.target.getAttribute('plankey')
     const updatedPlan = plan.slice(0).filter((p) => {
       return Number(p.key) !== Number(planKey)
     })
@@ -61,12 +61,11 @@ export const usePlan = () => {
 
   const calculatePlanTime = (height, postition) => {
     const unit = height / UNIT_HEIGHT
-    // const step = unit % UNIT_NUM_IN_SQUARE
     const minutes = (unit * UNIT_HEIGHT) / SQUARE_HEIGHT * 60
     const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
-    let startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_MINUTES) % 60
+    const startMinute = (Math.round((postition % SQUARE_HEIGHT) / UNIT_HEIGHT ) * UNIT_MINUTES) % 60
     const endHour = startHour + Math.floor((startMinute + minutes) / 60)
-    let endMinute = (startMinute + minutes) % 60
+    const endMinute = (startMinute + minutes) % 60
 
     return {
       startHour: startHour,
