@@ -11,7 +11,6 @@ import {usePlan} from "./hooks/usePlan";
 
 
 export default function App(){
-  const [text, setText] = useState(localStorage.getItem("text") ?? '')
   const [planKey, setPlanKey] = useState(localStorage.getItem("planKey") ?? 0)
 
   const formatText = (plan) => {
@@ -33,14 +32,19 @@ export default function App(){
       const minutes = Math.floor(d.minutes % 60)
       return d.startHour + ':' + startMinute  + ' - ' + d.endHour + ':' + endMinute + ' (' + hours + 'h ' + minutes + 'm) ' + d.description
     }).join("\n")
-    setText(text)
     return text
   }
 
-  const updateLocalStorage = (text, plan, planKey) => {
-    localStorage.setItem("text", text)
-    localStorage.setItem("plan", JSON.stringify(plan))
-    localStorage.setItem("planKey", planKey)
+  const updateLocalStorage = (newPlan, newPlanKey) => {
+    console.log(`updateLocalStorage`)
+    if(newPlan) {
+      localStorage.setItem("plan", JSON.stringify(newPlan))
+    }
+    console.log(`newPlan : ${newPlan}`)
+    console.log(`newPlanKey : ${newPlanKey}`)
+    if(newPlanKey) {
+      localStorage.setItem("planKey", newPlanKey)
+    }
   }
 
   // ヒント：フック間で情報を受け渡す
@@ -53,18 +57,11 @@ export default function App(){
     deletePlan,
     calculatePlanTime
   } = usePlan(
-    text,
-    setText,
     planKey,
     setPlanKey,
-    formatText,
     updateLocalStorage
   )
 
-  const changeText = (e) => {
-    setText(e.target.value)
-    updateLocalStorage(e.target.value, plan, planKey);
-  }
 
   const updateZindex = (planKey) => {
     const updatedPlan = plan.slice(0).map((p) => {
@@ -115,8 +112,9 @@ export default function App(){
       return p
     })
     setPlan(updatedPlan)
-    const text = formatText(updatedPlan)
-    updateLocalStorage(text, updatedPlan, planKey);
+    console.log(`updatedPlan : ${updatedPlan}`)
+    console.log(`planKey : ${planKey}`)
+    updateLocalStorage(updatedPlan);
   }
 
   const times = [...Array(24).keys()];
@@ -125,7 +123,7 @@ export default function App(){
     <Container fluid className='App'>
       <Row>
         <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
-          <TextPlan text={text} onChange={(e) => changeText(e)}/>
+          <TextPlan text={formatText(plan)} />
         </Col>
         <Col sm={6} xl={4} className='plan'>
           <Row>

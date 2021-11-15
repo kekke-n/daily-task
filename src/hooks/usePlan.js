@@ -5,7 +5,7 @@ const UNIT_NUM_IN_SQUARE = 4
 const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
-export const usePlan = (text, setText, planKey, setPlanKey, formatText, updateLocalStorage) => {
+export const usePlan = (planKey, setPlanKey, updateLocalStorage) => {
   const [plan, setPlan] = useState(JSON.parse(localStorage.getItem("plan")) ?? [])
 
   const createPlan = (startHour, endHour) => {
@@ -24,8 +24,7 @@ export const usePlan = (text, setText, planKey, setPlanKey, formatText, updateLo
     )
     setPlan(updatedPlan)
     setPlanKey(Number(planKey) + 1)
-    const text = formatText(updatedPlan)
-    updateLocalStorage(text, updatedPlan, Number(planKey) + 1);
+    updateLocalStorage(updatedPlan, Number(planKey) + 1);
   }
 
   const updatePlan =
@@ -45,8 +44,7 @@ export const usePlan = (text, setText, planKey, setPlanKey, formatText, updateLo
         return p
       })
       setPlan(updatedPlan)
-      const text = formatText(plan)
-      updateLocalStorage(text, plan, planKey);
+      updateLocalStorage(updatedPlan);
     }
 
   const deletePlan = (e) => {
@@ -55,8 +53,7 @@ export const usePlan = (text, setText, planKey, setPlanKey, formatText, updateLo
       return Number(p.key) !== Number(planKey)
     })
     setPlan(updatedPlan)
-    const text = formatText(updatedPlan)
-    updateLocalStorage(text, updatedPlan, planKey);
+    updateLocalStorage(updatedPlan);
   }
 
 
