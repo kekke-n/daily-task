@@ -8,6 +8,7 @@ import Time from "./Time";
 import Square from "./Square";
 import Plan from "./Plan";
 import {usePlan} from "./hooks/usePlan";
+import { updateLocalStorage } from "./lib/local_storage";
 
 
 export default function App(){
@@ -34,18 +35,6 @@ export default function App(){
     return text
   }
 
-  const updateLocalStorage = (newPlan, newPlanKey) => {
-    console.log(`updateLocalStorage`)
-    if(newPlan) {
-      localStorage.setItem("plan", JSON.stringify(newPlan))
-    }
-    console.log(`newPlan : ${newPlan}`)
-    console.log(`newPlanKey : ${newPlanKey}`)
-    if(newPlanKey) {
-      localStorage.setItem("planKey", newPlanKey)
-    }
-  }
-
   // ヒント：フック間で情報を受け渡す
   // https://ja.reactjs.org/docs/hooks-custom.html#tip-pass-information-between-hooks
   const {
@@ -55,10 +44,7 @@ export default function App(){
     updatePlan,
     deletePlan,
     calculatePlanTime
-  } = usePlan(
-    updateLocalStorage
-  )
-
+  } = usePlan()
 
   const updateZindex = (planKey) => {
     const updatedPlan = plan.slice(0).map((p) => {
