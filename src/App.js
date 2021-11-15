@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -11,7 +11,6 @@ import {usePlan} from "./hooks/usePlan";
 
 
 export default function App(){
-  const [planKey, setPlanKey] = useState(localStorage.getItem("planKey") ?? 0)
 
   const formatText = (plan) => {
     // TOOD:開始時間が早い順にソートする
@@ -57,8 +56,6 @@ export default function App(){
     deletePlan,
     calculatePlanTime
   } = usePlan(
-    planKey,
-    setPlanKey,
     updateLocalStorage
   )
 

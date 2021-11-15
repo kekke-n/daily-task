@@ -5,8 +5,9 @@ const UNIT_NUM_IN_SQUARE = 4
 const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
-export const usePlan = (planKey, setPlanKey, updateLocalStorage) => {
+export const usePlan = (updateLocalStorage) => {
   const [plan, setPlan] = useState(JSON.parse(localStorage.getItem("plan")) ?? [])
+  const [planKey, setPlanKey] = useState(localStorage.getItem("planKey") ?? 0)
 
   const createPlan = (startHour, endHour) => {
     const updatedPlan = plan.slice(0)
