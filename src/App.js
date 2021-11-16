@@ -4,6 +4,7 @@ import './index.css';
 
 import {Col, Container, Row} from "react-bootstrap";
 import TextPlan from "./TextPlan";
+import ListPlan from "./ListPlan";
 import Time from "./Time";
 import Square from "./Square";
 import Plan from "./Plan";
@@ -82,9 +83,9 @@ export default function App(){
     }
   }
 
-
   const saveDescription = (e) => {
     const description = e.target.value
+    console.log(description)
     const planKey = e.target.getAttribute('plankey')
     const updatedPlan = plan.slice(0).map((p) => {
       if(p.key === planKey){
@@ -105,6 +106,15 @@ export default function App(){
       <Row>
         <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
           <TextPlan text={formatText(plan)} />
+          { plan.map((p, idx) => {
+            return <ListPlan
+              key={idx}
+              plankey={p.key}
+              description={p.description}
+              saveDescription={saveDescription}
+            />
+            })
+          }
         </Col>
         <Col sm={6} xl={4} className='plan'>
           <Row>
