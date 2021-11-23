@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -12,7 +12,7 @@ import {usePlan} from "./hooks/usePlan";
 import { updateLocalStorage } from "./lib/local_storage";
 
 
-export default function App(){
+export default function   App(){
 
   const formatText = (plan) => {
     // TOOD:開始時間が早い順にソートする
@@ -83,20 +83,23 @@ export default function App(){
     }
   }
 
-  const saveDescription = (e) => {
+  const onKeyUp = (e) => {
     const description = e.target.value
     console.log(description)
     const planKey = e.target.getAttribute('plankey')
-    const updatedPlan = plan.slice(0).map((p) => {
+    let newPlan = plan.slice(0)
+    newPlan = newPlan.map((p) => {
       if(p.key === planKey){
         p.description = description
       }
       return p
     })
-    setPlan(updatedPlan)
-    console.log(`updatedPlan : ${updatedPlan}`)
+    setPlan(newPlan.concat())
+    console.log(`******************`)
+    console.log(`updatedPlan : ${newPlan}`)
     console.log(`planKey : ${planKey}`)
-    updateLocalStorage(updatedPlan);
+    updateLocalStorage(newPlan);
+    console.log(`******************`)
   }
 
   const times = [...Array(24).keys()];
@@ -106,12 +109,14 @@ export default function App(){
       <Row>
         <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
           <TextPlan text={formatText(plan)} />
+          <p>{`${plan.length}`}</p>
+
           { plan.map((p, idx) => {
             return <ListPlan
               key={idx}
               plankey={p.key}
               description={p.description}
-              saveDescription={saveDescription}
+              onKeyUp={onKeyUp}
             />
             })
           }
@@ -147,7 +152,7 @@ export default function App(){
                   onResizeStop={onResizeStop}
                   onDragStart={onDragStart}
                   onDragStop={onDragStop}
-                  saveDescription={saveDescription}
+                  onKeyUp={onKeyUp}
                   deletePlan={deletePlan}
                   isEdit={d.isEdit}
                 />

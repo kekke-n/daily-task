@@ -7,7 +7,7 @@ function ListPlan(props) {
     >
       <input
         plankey={props.plankey}
-        onKeyUp={props.saveDescription}
+        onKeyUp={props.onKeyUp}
         defaultValue={props.description} />
     </div>
   )

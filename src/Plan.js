@@ -42,7 +42,7 @@ export const Plan = (props) => {
           zIndex:20,
           height: (props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
         }}
-        onKeyUp={props.saveDescription}
+        onKeyUp={props.onKeyUp}
         rows={1}
         defaultValue={props.description}
       />
