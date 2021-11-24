@@ -83,7 +83,7 @@ export default function   App(){
     }
   }
 
-  const onKeyUp = (e) => {
+  const saveDescription = (e) => {
     const description = e.target.value
     console.log(description)
     const planKey = e.target.getAttribute('plankey')
@@ -95,11 +95,7 @@ export default function   App(){
       return p
     })
     setPlan(newPlan.concat())
-    console.log(`******************`)
-    console.log(`updatedPlan : ${newPlan}`)
-    console.log(`planKey : ${planKey}`)
     updateLocalStorage(newPlan);
-    console.log(`******************`)
   }
 
   const times = [...Array(24).keys()];
@@ -112,11 +108,12 @@ export default function   App(){
           <p>{`${plan.length}`}</p>
 
           { plan.map((p, idx) => {
+            console.log(`[Create ListPlan] `)
             return <ListPlan
               key={idx}
               plankey={p.key}
               description={p.description}
-              onKeyUp={onKeyUp}
+              onChange={saveDescription}
             />
             })
           }
@@ -152,7 +149,7 @@ export default function   App(){
                   onResizeStop={onResizeStop}
                   onDragStart={onDragStart}
                   onDragStop={onDragStop}
-                  onKeyUp={onKeyUp}
+                  onChange={saveDescription}
                   deletePlan={deletePlan}
                   isEdit={d.isEdit}
                 />

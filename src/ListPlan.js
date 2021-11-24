@@ -6,9 +6,11 @@ function ListPlan(props) {
       key={props.idx}
     >
       <input
+        type="text"
         plankey={props.plankey}
-        onKeyUp={props.onKeyUp}
-        defaultValue={props.description} />
+        onChange={props.onChange}
+        value={props.description}
+      />
     </div>
   )
 }

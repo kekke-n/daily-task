@@ -42,9 +42,9 @@ export const Plan = (props) => {
           zIndex:20,
           height: (props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
         }}
-        onKeyUp={props.onKeyUp}
+        onChange={props.onChange}
         rows={1}
-        defaultValue={props.description}
+        value={props.description}
       />
       <button
         className='btn brn-light delete-btn'
