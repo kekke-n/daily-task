@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -139,7 +139,7 @@ export default function App(){
             }
           </div>
         </Grid>
-        <Grid item xs={6} className='plan'>
+        <Grid item xs={6} id='plan' className='plan'>
           <Grid container >
             <Grid item xs={3}>
               { times.map((d, idx) => {
@@ -172,7 +172,7 @@ export default function App(){
                   onDragStop={onDragStop}
                   saveDescription={saveDescription}
                   deletePlan={deletePlan}
-                  isEdit={d.isEdit}
+                  done={d.done}
                 />
               }) }
             </Grid>

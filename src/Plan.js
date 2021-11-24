@@ -9,9 +9,10 @@ const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
 export const Plan = (props) => {
   return (
+
     <Rnd
       key={props.idx}
-      className="rnd"
+      className={ props.done ? 'rnd done' : 'rnd' }
       default={{
         x: 0,
         y: (props.startHour * SQUARE_HEIGHT) + (props.startMinute/UNIT_MINUTES * UNIT_HEIGHT),
@@ -34,20 +35,20 @@ export const Plan = (props) => {
       onDragStart={props.onDragStart}
       onDragStop={props.onDragStop}
     >
-      <textarea
-        className='description'
-        plankey={props.plankey}
-        style={{
-          zIndex:20,
-          height: (props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
-        }}
-        onChange={(e) => {
-          props.saveDescription(props.plankey, e.target.value)
-          }
-        }
-        rows={1}
-        value={props.description}
-      />
+    <textarea
+      className='description'
+      plankey={props.plankey}
+      style={{
+        zIndex:20,
+        height: (props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
+      }}
+      onChange={(e) => {
+        props.saveDescription(props.plankey, e.target.value)
+      }
+      }
+      rows={1}
+      value={props.description}
+    />
       <button
         className='btn brn-light delete-btn'
         plankey={props.plankey}
