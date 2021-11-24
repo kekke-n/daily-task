@@ -49,7 +49,7 @@ export const Plan = (props) => {
       <button
         className='btn brn-light delete-btn'
         plankey={props.plankey}
-        onClick={props.deletePlan}
+        onClick={() => { props.deletePlan(props.plankey) } }
       >
         ✕
       </button>

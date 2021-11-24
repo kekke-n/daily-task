@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -85,7 +85,6 @@ export default function   App(){
 
   const saveDescription = (e) => {
     const description = e.target.value
-    console.log(description)
     const planKey = e.target.getAttribute('plankey')
     let newPlan = plan.slice(0)
     newPlan = newPlan.map((p) => {
@@ -105,15 +104,15 @@ export default function   App(){
       <Row>
         <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
           <TextPlan text={formatText(plan)} />
-          <p>{`${plan.length}`}</p>
 
           { plan.map((p, idx) => {
-            console.log(`[Create ListPlan] `)
             return <ListPlan
               key={idx}
               plankey={p.key}
               description={p.description}
               onChange={saveDescription}
+              createPlan={createPlan}
+              deletePlan={deletePlan}
             />
             })
           }
