@@ -12,7 +12,7 @@ import {usePlan} from "./hooks/usePlan";
 import { updateLocalStorage } from "./lib/local_storage";
 
 
-export default function   App(){
+export default function App(){
 
   const formatText = (plan) => {
     // TOOD:開始時間が早い順にソートする
