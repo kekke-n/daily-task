@@ -115,8 +115,9 @@ export default function App(){
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container >
-        <Grid item xs={6}>
+      <Grid container  >
+        <Grid item lg={3} xl={3}/>
+        <Grid item xs={6} lg={3} xl={3}>
           <div style={{height: '35%'}}>
             <h4>スケジュール</h4>
             <TextPlan text={formatText(plan)}/>
@@ -139,7 +140,7 @@ export default function App(){
             }
           </div>
         </Grid>
-        <Grid item xs={6} id='plan' className='plan'>
+        <Grid item xs={6} lg={4} xl={3} className='plan'>
           <Grid container >
             <Grid item xs={3}>
               { times.map((d, idx) => {
