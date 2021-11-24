@@ -1,8 +1,10 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
-import {Col, Container, Row} from "react-bootstrap";
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+
 import TextPlan from "./TextPlan";
 import ListPlan from "./ListPlan";
 import Time from "./Time";
@@ -102,12 +104,10 @@ export default function App(){
   const inputElem = useRef(new Map);
 
   return (
-    <Container fluid className='App'>
-      <Row>
-        <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container >
+        <Grid item xs={6}>
           <TextPlan text={formatText(plan)} />
-
-
           { plan.map((p, idx) => {
             return <ListPlan
               key={idx}
@@ -118,50 +118,46 @@ export default function App(){
               deletePlan={deletePlan}
               inputElem={inputElem}
             />
-            })
+          })
           }
-        </Col>
-        <Col sm={6} xl={4} className='plan'>
-          <Row>
-            <Col xs={2}>
-              { times.map((d, idx) => {
-                return <Time key={idx} time={d + ':00'}/>
-              }) }
-            </Col>
-            <Col xs={10} className='px-0' style={{position: "relative"}}>
-              { times.map((d, idx) => {
-                return <Square
-                  key={idx}
-                  startTime={d + ':00'}
-                  endTime={d+1 + ':00'}
-                  description=''
-                  onClick={() => createPlan(d, d+1)}
-                />
-              }) }
-              { plan.map((d) => {
-                return <Plan
-                  key={d.key}
-                  plankey={d.key}
-                  startHour={d.startHour}
-                  endHour={d.endHour}
-                  startMinute={d.startMinute}
-                  minutes={d.minutes}
-                  description={d.description}
-                  zIndex={d.zIndex}
-                  onResizeStart={onResizeStart}
-                  onResizeStop={onResizeStop}
-                  onDragStart={onDragStart}
-                  onDragStop={onDragStop}
-                  onChange={saveDescription}
-                  deletePlan={deletePlan}
-                  isEdit={d.isEdit}
-                />
-              }) }
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </Container>
+        </Grid>
+        <Grid item xs={1} className='plan'>
+          { times.map((d, idx) => {
+            return <Time key={idx} time={d + ':00'}/>
+          }) }
+        </Grid>
+        <Grid item xs={5} style={{position: "relative"}} className='plan'>
+          { times.map((d, idx) => {
+            return <Square
+              key={idx}
+              startTime={d + ':00'}
+              endTime={d+1 + ':00'}
+              description=''
+              onClick={() => createPlan(d, d+1)}
+            />
+          }) }
+          { plan.map((d) => {
+            return <Plan
+              key={d.key}
+              plankey={d.key}
+              startHour={d.startHour}
+              endHour={d.endHour}
+              startMinute={d.startMinute}
+              minutes={d.minutes}
+              description={d.description}
+              zIndex={d.zIndex}
+              onResizeStart={onResizeStart}
+              onResizeStop={onResizeStop}
+              onDragStart={onDragStart}
+              onDragStop={onDragStop}
+              onChange={saveDescription}
+              deletePlan={deletePlan}
+              isEdit={d.isEdit}
+            />
+          }) }
+        </Grid>
+      </Grid>
+    </Box>
   );
 
 };

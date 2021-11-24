@@ -1,13 +1,20 @@
 import React from "react";
+import Checkbox from '@mui/material/Checkbox';
 
 function ListPlan(props) {
+
+  const moveFocus = (index, step) => {
+    const sortedIndices = [...props.inputElem.current.keys()].sort();
+    const nextIndex = sortedIndices[sortedIndices.indexOf(index) + step];
+    props.inputElem.current.get(nextIndex)?.focus()
+  }
 
   return (
     <div
       key={props.idx}
     >
+      <Checkbox/>
       <input
-        type="text"
         plankey={props.plankey}
         onChange={props.onChange}
         value={props.description}
@@ -16,12 +23,7 @@ function ListPlan(props) {
           if(e.which === 13){
             // Enterが押された場合
             props.createPlan('10', '11')
-
-            const sortedIndices = [...props.inputElem.current.keys()].sort();
-            const nextIndex = sortedIndices[sortedIndices.indexOf(props.plankey) + 1];
-            props.inputElem.current.get(nextIndex)?.focus()
-
-            // props.nextTextInput.current.focus()
+            moveFocus(props.plankey, 1)
           }
         }}
         onKeyDown={(e) => {
@@ -29,12 +31,7 @@ function ListPlan(props) {
             // Delete押下時かつ文字が入力されていない場合
             console.log('delete');
             props.deletePlan(props.plankey)
-
-            const sortedIndices = [...props.inputElem.current.keys()].sort();
-            const nextIndex = sortedIndices[sortedIndices.indexOf(props.plankey) - 1];
-            props.inputElem.current.get(nextIndex)?.focus()
-
-            // props.nameInput.current.focus()
+            moveFocus(props.plankey, -1)
           }
         }}
         ref={(element) => {
