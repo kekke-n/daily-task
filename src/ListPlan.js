@@ -14,7 +14,12 @@ function ListPlan(props) {
     <div
       key={props.idx}
     >
-      <Checkbox/>
+      <Checkbox
+        checked={props.done}
+        onChange={ (e) => {
+          props.saveDone(props.plankey, e.target.checked)
+        }}
+      />
       <Input
         plankey={props.plankey}
         onChange={(e) => {

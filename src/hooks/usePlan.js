@@ -15,6 +15,7 @@ export const usePlan = () => {
     updatedPlan.push(
       {
         key: planKey.toString(),
+        done: false,
         description: '',
         startHour:  startHour,
         endHour:  endHour,

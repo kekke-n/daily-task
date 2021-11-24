@@ -97,6 +97,18 @@ export default function App(){
     updateLocalStorage(newPlan);
   }
 
+  const saveDone = (planKey, done) => {
+    let newPlan = plan.slice(0)
+    newPlan = newPlan.map((p) => {
+      if(p.key === planKey){
+        p.done = done
+      }
+      return p
+    })
+    setPlan(newPlan.concat())
+    updateLocalStorage(newPlan);
+  }
+
   const times = [...Array(24).keys()];
 
   const inputElem = useRef(new Map);
@@ -116,7 +128,9 @@ export default function App(){
                 key={idx}
                 plankey={p.key}
                 description={p.description}
+                done={p.done}
                 saveDescription={saveDescription}
+                saveDone={saveDone}
                 createPlan={createPlan}
                 deletePlan={deletePlan}
                 inputElem={inputElem}
