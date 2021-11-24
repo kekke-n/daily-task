@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -99,11 +99,14 @@ export default function   App(){
 
   const times = [...Array(24).keys()];
 
+  const inputElem = useRef(new Map);
+
   return (
     <Container fluid className='App'>
       <Row>
         <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
           <TextPlan text={formatText(plan)} />
+
 
           { plan.map((p, idx) => {
             return <ListPlan
@@ -113,6 +116,7 @@ export default function   App(){
               onChange={saveDescription}
               createPlan={createPlan}
               deletePlan={deletePlan}
+              inputElem={inputElem}
             />
             })
           }
@@ -131,10 +135,10 @@ export default function   App(){
                   startTime={d + ':00'}
                   endTime={d+1 + ':00'}
                   description=''
-                  onClick={(index, startTime, endTime) => createPlan(d, d+1)}
+                  onClick={() => createPlan(d, d+1)}
                 />
               }) }
-              { plan.map((d, idx) => {
+              { plan.map((d) => {
                 return <Plan
                   key={d.key}
                   plankey={d.key}
