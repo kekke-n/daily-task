@@ -41,7 +41,10 @@ export const Plan = (props) => {
           zIndex:20,
           height: (props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
         }}
-        onChange={props.onChange}
+        onChange={(e) => {
+          props.saveDescription(props.plankey, e.target.value)
+          }
+        }
         rows={1}
         value={props.description}
       />

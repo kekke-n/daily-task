@@ -85,9 +85,7 @@ export default function App(){
     }
   }
 
-  const saveDescription = (e) => {
-    const description = e.target.value
-    const planKey = e.target.getAttribute('plankey')
+  const saveDescription = (planKey, description) => {
     let newPlan = plan.slice(0)
     newPlan = newPlan.map((p) => {
       if(p.key === planKey){
@@ -113,7 +111,7 @@ export default function App(){
               key={idx}
               plankey={p.key}
               description={p.description}
-              onChange={saveDescription}
+              saveDescription={saveDescription}
               createPlan={createPlan}
               deletePlan={deletePlan}
               inputElem={inputElem}
@@ -152,7 +150,7 @@ export default function App(){
                   onResizeStop={onResizeStop}
                   onDragStart={onDragStart}
                   onDragStop={onDragStop}
-                  onChange={saveDescription}
+                  saveDescription={saveDescription}
                   deletePlan={deletePlan}
                   isEdit={d.isEdit}
                 />

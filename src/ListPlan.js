@@ -1,5 +1,6 @@
 import React from "react";
 import Checkbox from '@mui/material/Checkbox';
+import Input from '@mui/material/Input';
 
 function ListPlan(props) {
 
@@ -14,9 +15,11 @@ function ListPlan(props) {
       key={props.idx}
     >
       <Checkbox/>
-      <input
+      <Input
         plankey={props.plankey}
-        onChange={props.onChange}
+        onChange={(e) => {
+          props.saveDescription(props.plankey, e.target.value)
+        }}
         value={props.description}
         onKeyPress={(e) => {
           console.log(e.which)
