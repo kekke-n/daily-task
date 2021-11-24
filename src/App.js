@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 import {Col, Container, Row} from "react-bootstrap";
 import TextPlan from "./TextPlan";
+import ListPlan from "./ListPlan";
 import Time from "./Time";
 import Square from "./Square";
 import Plan from "./Plan";
@@ -82,29 +83,43 @@ export default function App(){
     }
   }
 
-
   const saveDescription = (e) => {
     const description = e.target.value
     const planKey = e.target.getAttribute('plankey')
-    const updatedPlan = plan.slice(0).map((p) => {
+    let newPlan = plan.slice(0)
+    newPlan = newPlan.map((p) => {
       if(p.key === planKey){
         p.description = description
       }
       return p
     })
-    setPlan(updatedPlan)
-    console.log(`updatedPlan : ${updatedPlan}`)
-    console.log(`planKey : ${planKey}`)
-    updateLocalStorage(updatedPlan);
+    setPlan(newPlan.concat())
+    updateLocalStorage(newPlan);
   }
 
   const times = [...Array(24).keys()];
+
+  const inputElem = useRef(new Map);
 
   return (
     <Container fluid className='App'>
       <Row>
         <Col sm={6} xl={{span:3, offset:3}} className='text-plan'>
           <TextPlan text={formatText(plan)} />
+
+
+          { plan.map((p, idx) => {
+            return <ListPlan
+              key={idx}
+              plankey={p.key}
+              description={p.description}
+              onChange={saveDescription}
+              createPlan={createPlan}
+              deletePlan={deletePlan}
+              inputElem={inputElem}
+            />
+            })
+          }
         </Col>
         <Col sm={6} xl={4} className='plan'>
           <Row>
@@ -120,10 +135,10 @@ export default function App(){
                   startTime={d + ':00'}
                   endTime={d+1 + ':00'}
                   description=''
-                  onClick={(index, startTime, endTime) => createPlan(d, d+1)}
+                  onClick={() => createPlan(d, d+1)}
                 />
               }) }
-              { plan.map((d, idx) => {
+              { plan.map((d) => {
                 return <Plan
                   key={d.key}
                   plankey={d.key}
@@ -137,7 +152,7 @@ export default function App(){
                   onResizeStop={onResizeStop}
                   onDragStart={onDragStart}
                   onDragStop={onDragStop}
-                  saveDescription={saveDescription}
+                  onChange={saveDescription}
                   deletePlan={deletePlan}
                   isEdit={d.isEdit}
                 />

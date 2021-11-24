@@ -49,8 +49,7 @@ export const usePlan = () => {
       updateLocalStorage(updatedPlan);
     }
 
-  const deletePlan = (e) => {
-    const planKey = e.target.getAttribute('plankey')
+  const deletePlan = (planKey) => {
     const updatedPlan = plan.slice(0).filter((p) => {
       return Number(p.key) !== Number(planKey)
     })
