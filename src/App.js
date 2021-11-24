@@ -121,40 +121,44 @@ export default function App(){
           })
           }
         </Grid>
-        <Grid item xs={1} className='plan'>
-          { times.map((d, idx) => {
-            return <Time key={idx} time={d + ':00'}/>
-          }) }
-        </Grid>
-        <Grid item xs={5} style={{position: "relative"}} className='plan'>
-          { times.map((d, idx) => {
-            return <Square
-              key={idx}
-              startTime={d + ':00'}
-              endTime={d+1 + ':00'}
-              description=''
-              onClick={() => createPlan(d, d+1)}
-            />
-          }) }
-          { plan.map((d) => {
-            return <Plan
-              key={d.key}
-              plankey={d.key}
-              startHour={d.startHour}
-              endHour={d.endHour}
-              startMinute={d.startMinute}
-              minutes={d.minutes}
-              description={d.description}
-              zIndex={d.zIndex}
-              onResizeStart={onResizeStart}
-              onResizeStop={onResizeStop}
-              onDragStart={onDragStart}
-              onDragStop={onDragStop}
-              onChange={saveDescription}
-              deletePlan={deletePlan}
-              isEdit={d.isEdit}
-            />
-          }) }
+        <Grid item xs={6} className='plan'>
+          <Grid container >
+            <Grid item xs={3}>
+              { times.map((d, idx) => {
+                return <Time key={idx} time={d + ':00'}/>
+              }) }
+            </Grid>
+            <Grid item xs={9} style={{position: "relative"}}>
+              { times.map((d, idx) => {
+                return <Square
+                  key={idx}
+                  startTime={d + ':00'}
+                  endTime={d+1 + ':00'}
+                  description=''
+                  onClick={() => createPlan(d, d+1)}
+                />
+              }) }
+              { plan.map((d) => {
+                return <Plan
+                  key={d.key}
+                  plankey={d.key}
+                  startHour={d.startHour}
+                  endHour={d.endHour}
+                  startMinute={d.startMinute}
+                  minutes={d.minutes}
+                  description={d.description}
+                  zIndex={d.zIndex}
+                  onResizeStart={onResizeStart}
+                  onResizeStop={onResizeStop}
+                  onDragStart={onDragStart}
+                  onDragStop={onDragStop}
+                  onChange={saveDescription}
+                  deletePlan={deletePlan}
+                  isEdit={d.isEdit}
+                />
+              }) }
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Box>
