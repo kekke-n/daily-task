@@ -38,7 +38,8 @@ function ListPlan(props) {
           }
         }}
         ref={(element) => {
-          if (element) props.inputElem.current.set(props.plankey, element);
+          const inputElm = element?.children[0]
+          if (inputElm) props.inputElem.current.set(props.plankey, inputElm);
           else props.inputElem.current.delete(props.plankey);
         }}
       />
