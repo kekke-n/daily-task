@@ -105,19 +105,25 @@ export default function App(){
     <Box sx={{ flexGrow: 1 }}>
       <Grid container >
         <Grid item xs={6}>
-          <TextPlan text={formatText(plan)} />
-          { plan.map((p, idx) => {
-            return <ListPlan
-              key={idx}
-              plankey={p.key}
-              description={p.description}
-              saveDescription={saveDescription}
-              createPlan={createPlan}
-              deletePlan={deletePlan}
-              inputElem={inputElem}
-            />
-          })
-          }
+          <div style={{height: '35%'}}>
+            <h4>スケジュール</h4>
+            <TextPlan text={formatText(plan)}/>
+          </div>
+          <div>
+            <h4>タスク</h4>
+            { plan.map((p, idx) => {
+              return <ListPlan
+                key={idx}
+                plankey={p.key}
+                description={p.description}
+                saveDescription={saveDescription}
+                createPlan={createPlan}
+                deletePlan={deletePlan}
+                inputElem={inputElem}
+              />
+            })
+            }
+          </div>
         </Grid>
         <Grid item xs={6} className='plan'>
           <Grid container >
