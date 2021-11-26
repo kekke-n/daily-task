@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 import Schedule from "./Schedule";
-import TaskList from "./TaskList";
+import Task from "./Task";
 import Time from "./Time";
 import Square from "./Square";
 import Plan from "./Plan";
@@ -125,7 +125,7 @@ export default function App(){
           <div>
             <h4>タスク</h4>
             { plan.map((p, idx) => {
-              return <TaskList
+              return <Task
                 key={idx}
                 plankey={p.key}
                 description={p.description}
