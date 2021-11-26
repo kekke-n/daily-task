@@ -17,13 +17,15 @@
     "react-dom": "^17.0.2",
     "react-rnd": "^10.3.5",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "svg-to-png": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "convert": "node ./doc/convert.js"
   },
   "eslintConfig": {
     "extends": "react-app"
