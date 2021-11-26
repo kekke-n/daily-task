@@ -5,7 +5,7 @@ import './index.css';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import TextPlan from "./TextPlan";
+import Schedule from "./Schedule";
 import ListPlan from "./ListPlan";
 import Time from "./Time";
 import Square from "./Square";
@@ -120,7 +120,7 @@ export default function App(){
         <Grid item xs={6} lg={3} xl={3}>
           <div style={{height: '35%'}}>
             <h4>スケジュール</h4>
-            <TextPlan text={formatText(plan)}/>
+            <Schedule text={formatText(plan)}/>
           </div>
           <div>
             <h4>タスク</h4>

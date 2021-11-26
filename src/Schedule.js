@@ -1,6 +1,6 @@
 import React from "react";
 
-function TextPlan(props) {
+function Schedule(props) {
   return (
     <div>
         <pre>{props.text}</pre>
@@ -8,4 +8,4 @@ function TextPlan(props) {
   )
 }
 
-export default TextPlan;
+export default Schedule;
