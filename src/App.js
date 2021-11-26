@@ -10,7 +10,7 @@ import Task from "./Task";
 import Time from "./Time";
 import Square from "./Square";
 import Event from "./Event";
-import {usePlan} from "./hooks/usePlan";
+import {useTask} from "./hooks/useTask";
 import { updateLocalStorage } from "./lib/local_storage";
 
 
@@ -45,7 +45,7 @@ export default function App(){
     updatePlan,
     deletePlan,
     calculatePlanTime
-  } = usePlan()
+  } = useTask()
 
   const updateZindex = (planKey) => {
     const updatedPlan = plan.slice(0).map((p) => {
