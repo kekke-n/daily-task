@@ -7,7 +7,7 @@ const UNIT_NUM_IN_SQUARE = 4
 const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
-export const Plan = (props) => {
+export const Event = (props) => {
   return (
 
     <Rnd
@@ -60,4 +60,4 @@ export const Plan = (props) => {
   )
 }
 
-export default Plan;
+export default Event;

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -9,7 +9,7 @@ import Schedule from "./Schedule";
 import Task from "./Task";
 import Time from "./Time";
 import Square from "./Square";
-import Plan from "./Plan";
+import Event from "./Event";
 import {usePlan} from "./hooks/usePlan";
 import { updateLocalStorage } from "./lib/local_storage";
 
@@ -158,7 +158,7 @@ export default function App(){
                 />
               }) }
               { plan.map((d) => {
-                return <Plan
+                return <Event
                   key={d.key}
                   plankey={d.key}
                   startHour={d.startHour}
