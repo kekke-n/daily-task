@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import Schedule from "./Schedule";
 import Task from "./Task";
 import Time from "./Time";
-import Square from "./Square";
+import Cell from "./Cell";
 import Event from "./Event";
 import {useTask} from "./hooks/useTask";
 import { updateLocalStorage } from "./lib/local_storage";
@@ -149,7 +149,7 @@ export default function App(){
             </Grid>
             <Grid item xs={9} style={{position: "relative"}}>
               { times.map((d, idx) => {
-                return <Square
+                return <Cell
                   key={idx}
                   startTime={d + ':00'}
                   endTime={d+1 + ':00'}
