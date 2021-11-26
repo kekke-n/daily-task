@@ -7,7 +7,7 @@ const UNIT_NUM_IN_SQUARE = 4
 const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
-export const Plan = (props) => {
+export const Event = (props) => {
   return (
 
     <Rnd
@@ -28,7 +28,7 @@ export const Plan = (props) => {
       resizeGrid={[0, UNIT_HEIGHT]}
       dragGrid={[1, UNIT_HEIGHT]}
       minWidth="20"
-      plankey={props.plankey}
+      taskkey={props.taskkey}
       style={{zIndex:props.zIndex}}
       onResizeStart={props.onResizeStart}
       onResizeStop={props.onResizeStop}
@@ -37,13 +37,13 @@ export const Plan = (props) => {
     >
     <textarea
       className='description'
-      plankey={props.plankey}
+      taskkey={props.taskkey}
       style={{
         zIndex:20,
         height: (props.minutes / UNIT_MINUTES) * UNIT_HEIGHT
       }}
       onChange={(e) => {
-        props.saveDescription(props.plankey, e.target.value)
+        props.saveDescription(props.taskkey, e.target.value)
       }
       }
       rows={1}
@@ -51,8 +51,8 @@ export const Plan = (props) => {
     />
       <button
         className='btn brn-light delete-btn'
-        plankey={props.plankey}
-        onClick={() => { props.deletePlan(props.plankey) } }
+        taskkey={props.taskkey}
+        onClick={() => { props.deleteTask(props.taskkey) } }
       >
         ✕
       </button>
@@ -60,4 +60,4 @@ export const Plan = (props) => {
   )
 }
 
-export default Plan;
+export default Event;

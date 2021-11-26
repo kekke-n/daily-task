@@ -2,12 +2,12 @@ import React from "react";
 import { render } from "react-dom";
 import { act } from "react-dom/test-utils";
 import  { container } from './test_common'
-import ListPlan from "../src/ListPlan";
-import TextPlan from "./TextPlan";
+import Task from "../src/Task";
+import Schedule from "./Schedule";
 
 test('aaa', () => {
   act(() => {
-    render(<TextPlan text="test"/>, container);
+    render(<Schedule text="test"/>, container);
   });
   expect(container.querySelector("pre").textContent).toBe("test");
 })

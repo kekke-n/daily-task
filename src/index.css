@@ -66,12 +66,12 @@ body {
   border: none;
   color: white;
 }
-.plan {
+.task {
   overflow: scroll;
   height: 90vh;
   padding: 40px 10px 40px 0;
 }
 
-.text-plan pre{
+.text-task pre{
   font-size :1em;
 }

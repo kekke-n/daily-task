@@ -1,9 +1,9 @@
 import React from "react";
 
-function Square(props) {
+function Cell(props) {
   return (
     <div className='square' onClick={props.onClick}/>
   )
 }
 
-export default Square;
+export default Cell;
