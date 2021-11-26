@@ -7,14 +7,14 @@ const UNIT_HEIGHT = SQUARE_HEIGHT / UNIT_NUM_IN_SQUARE
 const UNIT_MINUTES = 60 / UNIT_NUM_IN_SQUARE
 
 export const useTask = () => {
-  const [plan, setPlan] = useState(JSON.parse(localStorage.getItem("plan")) ?? [])
-  const [planKey, setPlanKey] = useState(localStorage.getItem("planKey") ?? 0)
+  const [task, setTask] = useState(JSON.parse(localStorage.getItem("task")) ?? [])
+  const [taskKey, setTaskKey] = useState(localStorage.getItem("taskKey") ?? 0)
 
-  const createPlan = (startHour, endHour) => {
-    const updatedPlan = plan.slice(0)
-    updatedPlan.push(
+  const createTask = (startHour, endHour) => {
+    const updatedTask = task.slice(0)
+    updatedTask.push(
       {
-        key: planKey.toString(),
+        key: taskKey.toString(),
         done: false,
         description: '',
         startHour:  startHour,
@@ -25,15 +25,15 @@ export const useTask = () => {
         hours: 1,
       }
     )
-    setPlan(updatedPlan)
-    setPlanKey(Number(planKey) + 1)
-    updateLocalStorage(updatedPlan, Number(planKey) + 1);
+    setTask(updatedTask)
+    setTaskKey(Number(taskKey) + 1)
+    updateLocalStorage(updatedTask, Number(taskKey) + 1);
   }
 
-  const updatePlan =
-    (planKey, startHour, endHour, startMinute, endMinute, minutes, hours, description) => {
-      const updatedPlan = plan.slice(0).map(p => {
-        if(p.key === planKey){
+  const updateTask =
+    (taskKey, startHour, endHour, startMinute, endMinute, minutes, hours, description) => {
+      const updatedTask = task.slice(0).map(p => {
+        if(p.key === taskKey){
           p.startHour = startHour
           p.endHour = endHour
           p.startMinute = startMinute
@@ -41,25 +41,25 @@ export const useTask = () => {
           p.minutes = minutes
           p.hours = hours
           if(description !== ''){
-            plan.description = description
+            task.description = description
           }
         }
         return p
       })
-      setPlan(updatedPlan)
-      updateLocalStorage(updatedPlan);
+      setTask(updatedTask)
+      updateLocalStorage(updatedTask);
     }
 
-  const deletePlan = (planKey) => {
-    const updatedPlan = plan.slice(0).filter((p) => {
-      return Number(p.key) !== Number(planKey)
+  const deleteTask = (taskKey) => {
+    const updatedTask = task.slice(0).filter((p) => {
+      return Number(p.key) !== Number(taskKey)
     })
-    setPlan(updatedPlan)
-    updateLocalStorage(updatedPlan);
+    setTask(updatedTask)
+    updateLocalStorage(updatedTask);
   }
 
 
-  const calculatePlanTime = (height, postition) => {
+  const calculateTaskTime = (height, postition) => {
     const unit = height / UNIT_HEIGHT
     const minutes = (unit * UNIT_HEIGHT) / SQUARE_HEIGHT * 60
     const startHour = Math.floor(Math.round((postition / SQUARE_HEIGHT)* 10) / 10)
@@ -78,11 +78,11 @@ export const useTask = () => {
   }
 
   return {
-    plan,
-    setPlan,
-    createPlan,
-    updatePlan,
-    deletePlan,
-    calculatePlanTime
+    task,
+    setTask,
+    createTask,
+    updateTask,
+    deleteTask,
+    calculateTaskTime
   }
 }

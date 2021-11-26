@@ -1,9 +1,9 @@
 
-export const updateLocalStorage = (newPlan, newPlanKey) => {
-  if(newPlan) {
-    localStorage.setItem("plan", JSON.stringify(newPlan))
+export const updateLocalStorage = (newTask, newTaskKey) => {
+  if(newTask) {
+    localStorage.setItem("task", JSON.stringify(newTask))
   }
-  if(newPlanKey) {
-    localStorage.setItem("planKey", newPlanKey)
+  if(newTaskKey) {
+    localStorage.setItem("taskKey", newTaskKey)
   }
 }
