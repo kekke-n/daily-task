@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import { act } from "react-dom/test-utils";
 import  { container } from './test_common'
-import ListPlan from "../src/ListPlan";
+import TaskList from "../src/TaskList";
 import Schedule from "./Schedule";
 
 test('aaa', () => {

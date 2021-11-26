@@ -2,7 +2,7 @@ import React from "react";
 import Checkbox from '@mui/material/Checkbox';
 import Input from '@mui/material/Input';
 
-function ListPlan(props) {
+function TaskList(props) {
 
   const moveFocus = (index, step) => {
     const sortedIndices = [...props.inputElem.current.keys()].sort();
@@ -50,4 +50,4 @@ function ListPlan(props) {
   )
 }
 
-export default ListPlan;
+export default TaskList;
