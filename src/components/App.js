@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
+import '../index.css';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -10,8 +10,8 @@ import Task from "./Task";
 import Time from "./Time";
 import Cell from "./Cell";
 import Event from "./Event";
-import {useTask} from "./hooks/useTask";
-import { updateLocalStorage } from "./lib/local_storage";
+import {useTask} from "../hooks/useTask";
+import { updateLocalStorage } from "../lib/local_storage";
 
 
 export default function App(){
@@ -111,7 +111,7 @@ export default function App(){
 
   const times = [...Array(24).keys()];
 
-  const inputElem = useRef(new Map);
+  const inputElem = useRef(new Map());
 
   return (
     <Box sx={{ flexGrow: 1 }}>

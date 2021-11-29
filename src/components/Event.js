@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css';
+import '../index.css';
 import { Rnd } from 'react-rnd';
 
 const SQUARE_HEIGHT = 80

@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
 import { act } from "react-dom/test-utils";
-import  { container } from './test_common'
-import Task from "../src/Task";
+import  { container } from '../test_common'
+import Task from "./Task";
 import Schedule from "./Schedule";
 
 test('aaa', () => {
