@@ -13,8 +13,20 @@ import Event from "./Event";
 import {useTask} from "../hooks/useTask";
 import { updateLocalStorage } from "../lib/local_storage";
 
-
 export default function App(){
+
+  // TODO:サンプルでサーバサイドからデータ取得
+  const axiosBase = require('axios');
+  const axios = axiosBase.create({
+    baseURL: 'http://localhost:3435', // バックエンドB のURL:port を指定する
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    responseType: 'json'
+  });
+
+  axios.get('/tasks').then(res => (console.log(res.data)))
 
   const formatText = (task) => {
     // TOOD:開始時間が早い順にソートする

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/daily-task.iml" filepath="$PROJECT_DIR$/.idea/daily-task.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../daily-task-api/.idea/daily-task-api.iml" filepath="$PROJECT_DIR$/../daily-task-api/.idea/daily-task-api.iml" />
     </modules>
   </component>
 </project>
