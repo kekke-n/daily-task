@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
 
@@ -125,6 +125,18 @@ export default function App(){
 
   const inputElem = useRef(new Map());
 
+  // 初期表示時の自動scrollの設定
+  const scrollRef = useRef(null);
+
+  const scrollToBottomOfList = () => {
+    scrollRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
+  }
+
+  useEffect(scrollToBottomOfList, [])
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container  >
@@ -154,7 +166,7 @@ export default function App(){
         </Grid>
         <Grid item xs={6} lg={4} xl={3} className='task'>
           <Grid container >
-            <Grid item xs={3}>
+            <Grid item xs={3} ref={scrollRef}>
               { times.map((d, idx) => {
                 return <Time key={idx} time={d + ':00'}/>
               }) }
