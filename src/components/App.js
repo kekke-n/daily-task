@@ -1,6 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../index.css';
+import '../constants'
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,6 +13,7 @@ import Cell from "./Cell";
 import Event from "./Event";
 import {useTask} from "../hooks/useTask";
 import { updateLocalStorage } from "../lib/local_storage";
+import {Constants} from "../constants";
 
 export default function App(){
 
@@ -129,8 +131,12 @@ export default function App(){
   const scrollRef = useRef(null);
 
   const scrollToBottomOfList = () => {
+    const date = new Date
+    const hour = date.getHours()
+    // 初期表示時に現時刻が真ん中あたりに表示されるように調整する
+    const offset_height = Constants.SQUARE_HEIGHT * 3
     scrollRef.current.scrollBy({
-      top: 1000,
+      top: (Constants.SQUARE_HEIGHT * hour) - offset_height,
       left: 1000,
       behavior: 'smooth'
     })
