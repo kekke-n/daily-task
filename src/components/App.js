@@ -16,17 +16,17 @@ import { updateLocalStorage } from "../lib/local_storage";
 export default function App(){
 
   // TODO:サンプルでサーバサイドからデータ取得
-  const axiosBase = require('axios');
-  const axios = axiosBase.create({
-    baseURL: 'http://localhost:3435', // バックエンドB のURL:port を指定する
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    },
-    responseType: 'json'
-  });
-
-  axios.get('/tasks').then(res => (console.log(res.data)))
+  // const axiosBase = require('axios');
+  // const axios = axiosBase.create({
+  //   baseURL: 'http://localhost:3435', // バックエンドB のURL:port を指定する
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'X-Requested-With': 'XMLHttpRequest'
+  //   },
+  //   responseType: 'json'
+  // });
+  //
+  // axios.get('/tasks').then(res => (console.log(res.data)))
 
   const formatText = (task) => {
     // TOOD:開始時間が早い順にソートする
@@ -129,9 +129,10 @@ export default function App(){
   const scrollRef = useRef(null);
 
   const scrollToBottomOfList = () => {
-    scrollRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
+    scrollRef.current.scrollBy({
+      top: 1000,
+      left: 1000,
+      behavior: 'smooth'
     })
   }
 
@@ -164,9 +165,9 @@ export default function App(){
             }
           </div>
         </Grid>
-        <Grid item xs={6} lg={4} xl={3} className='task'>
+        <Grid item xs={6} lg={4} xl={3} className='task' ref={scrollRef}>
           <Grid container >
-            <Grid item xs={3} ref={scrollRef}>
+            <Grid item xs={3} >
               { times.map((d, idx) => {
                 return <Time key={idx} time={d + ':00'}/>
               }) }
