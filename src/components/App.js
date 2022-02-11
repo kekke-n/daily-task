@@ -5,6 +5,7 @@ import '../constants'
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Hidden from '@mui/material/Hidden';
 
 import Schedule from "./Schedule";
 import Task from "./Task";
@@ -149,7 +150,8 @@ export default function App(){
     <Box sx={{ flexGrow: 1 }}>
       <Grid container  >
         <Grid item lg={3} xl={3}/>
-        <Grid item xs={6} lg={3} xl={3}>
+        <Hidden smDown>
+        <Grid item lg={3} xl={3}>
           <div style={{height: '35%'}}>
             <h4>スケジュール</h4>
             <Schedule text={formatText(task)}/>
@@ -172,7 +174,8 @@ export default function App(){
             }
           </div>
         </Grid>
-        <Grid item xs={6} lg={4} xl={3} className='task' ref={scrollRef}>
+        </Hidden>
+        <Grid item xs={12} lg={4} xl={3} className='task' ref={scrollRef}>
           <Grid container >
             <Grid item xs={3} >
               { times.map((d, idx) => {
