@@ -11,7 +11,7 @@ export const Event = (props) => {
       className={ props.done ? 'rnd done' : 'rnd' }
       default={{
         x: 0,
-        y: (props.startHour * Constants.SQUARE_HEIGHT) + (props.startMinute/Constants.UNIT_MINUTES * Constants.UNIT_HEIGHT),
+        y: (props.startHour * Constants.HOUR_HEIGHT) + (props.startMinute/Constants.UNIT_MINUTES * Constants.UNIT_HEIGHT),
         width: '100%',
         height: (props.minutes / Constants.UNIT_MINUTES) * Constants.UNIT_HEIGHT,
       }}

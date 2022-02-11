@@ -75,3 +75,20 @@ body {
 .text-task pre{
   font-size :1em;
 }
+
+.current-items {
+  z-index: 100;
+  position: absolute;
+}
+
+.current-time  {
+  color: red;
+  left: -50px;
+  top: -50px;
+}
+
+.current-bar  {
+  background-color: red;
+  width: 100%;
+  height: 3px;
+}

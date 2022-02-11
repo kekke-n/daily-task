@@ -11,6 +11,7 @@ import Task from "./Task";
 import Time from "./Time";
 import Cell from "./Cell";
 import Event from "./Event";
+import CurrentBar from "./CurrentBar";
 import {useTask} from "../hooks/useTask";
 import { updateLocalStorage } from "../lib/local_storage";
 import {Constants} from "../constants";
@@ -134,9 +135,9 @@ export default function App(){
     const date = new Date
     const hour = date.getHours()
     // 初期表示時に現時刻が真ん中あたりに表示されるように調整する
-    const offset_height = Constants.SQUARE_HEIGHT * 3
+    const offset_height = Constants.HOUR_HEIGHT * 3
     scrollRef.current.scrollBy({
-      top: (Constants.SQUARE_HEIGHT * hour) - offset_height,
+      top: (Constants.HOUR_HEIGHT * hour) - offset_height,
       left: 1000,
       behavior: 'smooth'
     })
@@ -179,6 +180,7 @@ export default function App(){
               }) }
             </Grid>
             <Grid item xs={9} style={{position: "relative"}}>
+              <CurrentBar/>
               { times.map((d, idx) => {
                 return <Cell
                   key={idx}
