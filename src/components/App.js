@@ -144,6 +144,17 @@ export default function App(){
     })
   }
 
+  // クリップボードにテキストをコピー
+  const copyToClipBoard = (content) => {
+    navigator.clipboard.writeText(content)
+      .then(() => {
+        console.log("Text copied to clipboard...")
+      })
+      .catch(err => {
+        console.log('Something went wrong', err);
+      })
+  }
+
   useEffect(scrollToBottomOfList, [])
 
   return (
@@ -153,8 +164,10 @@ export default function App(){
         <Hidden smDown>
         <Grid item lg={3} xl={3}>
           <div style={{height: '35%'}}>
-            <h4>スケジュール</h4>
-            <Schedule text={formatText(task)}/>
+            <Schedule
+              text={formatText(task)}
+              copyToClipBoard={copyToClipBoard}
+            />
           </div>
           <div>
             <h4>タスク</h4>
