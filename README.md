@@ -7,7 +7,9 @@
 - スケジュール、タスク、タイムライン上の情報が同期
 - 登録情報はブラウズのローカルストレージに登録（ブラウザのローカルストレージをリセットすると削除される）
 
-[サンプルページ](https://daily-task-react.herokuapp.com/)
+サンプルページ
+（herokuの代替サーバを検討中）
+
 
 ![daily-task](https://user-images.githubusercontent.com/7373564/143287413-f13a46f8-5b82-4bce-8288-cabf92d131bc.gif)
 
